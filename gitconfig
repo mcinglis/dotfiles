@@ -1,0 +1,25 @@
+[user]
+  name = Malcolm Inglis
+  email = me@minglis.id.au
+[credential]
+  helper = cache --timeout=86400
+[core]
+  editor = vim
+[color]
+  ui = true
+[alias]
+  a = add
+  aa = !git add -u && git add . && git status
+  br = branch
+  c = commit
+  cm = commit -m
+  co = checkout
+  cob = checkout -b
+  cl = clone
+  d = diff
+  l = log
+  ll = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+  p = push
+  s = status
+  sh = stash
+[hub]
