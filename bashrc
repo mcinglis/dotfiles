@@ -2,7 +2,7 @@
 
 # Source global definitions
 if [ -f /etc/bashrc ]; then
-	. /etc/bashrc
+  . /etc/bashrc
 fi
 
 # User specific aliases and functions
@@ -43,3 +43,9 @@ alias yud='y update'
 alias yif='yum info'
 
 alias ip='curl -s http://checkip.dyndns.com | sed "s/[^0-9\.]//g"'
+
+function gitd() {
+  git aa
+  git cm "$1"
+  git p
+}
