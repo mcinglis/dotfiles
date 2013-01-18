@@ -5,8 +5,22 @@ if [ -f /etc/bashrc ]; then
   . /etc/bashrc
 fi
 
-# User specific aliases and functions
+###
+### User specific environment and startup programs
+###
 
+PATH=$PATH:$HOME/.local/bin
+
+# Set up rbenv
+PATH=$HOME/.rbenv/bin:$PATH
+eval "$(rbenv init -)"
+
+# Set up sbt
+# PATH=$HOME/Code/scalafunc/sbt/bin:$PATH
+
+# export $(gnome-keyring-daemon -s)
+
+export PATH
 export EDITOR=vim
 export VIMRC=~/.vimrc
 export SHELLRC=~/.bashrc
@@ -15,7 +29,14 @@ export SHELLRC=~/.bashrc
 export LC_COLLATE=C
 
 # prompt
-PS1='\[\033[01;34m\]\w\[\033[00m\]\$ '
+export PS1='\[\033[01;34m\]\w\[\033[00m\]\$ '
+
+# change directories by typing their name
+shopt -s autocd
+
+###
+### User specific aliases and functions
+###
 
 alias ls='ls --color -h --group-directories-first'
 alias l='ls'
@@ -44,8 +65,18 @@ alias yif='yum info'
 
 alias ip='curl -s http://checkip.dyndns.com | sed "s/[^0-9\.]//g"'
 
-function gitd() {
+# gc this is my commit message
+# Stages all modified files in the Git repo, commits them with the arguments
+# as a commit message, and pushes.
+function gc() {
   git aa
-  git cm "$1"
+  git cm "$*"
   git p
+}
+
+# mvsl <oldpath> <newpath>
+# Moves the file and creates a symbolic link from <oldpath> to <newpath>.
+function mvsl() {
+  mv $1 $2
+  ln -s $2 $1
 }

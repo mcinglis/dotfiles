@@ -7,6 +7,9 @@
   editor = vim
 [color]
   ui = true
+[push]
+  default = simple
+
 [alias]
   a = add
   aa = !git add -u && git add . && git status
@@ -22,4 +25,7 @@
   p = push
   s = status
   sh = stash
+  rao = remote add origin
+
 [hub]
+  protocol = https
