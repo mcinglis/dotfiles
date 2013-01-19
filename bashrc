@@ -41,9 +41,15 @@ shopt -s autocd
 alias ls='ls --color -h --group-directories-first'
 alias l='ls'
 alias la='ls -a'
+alias ll='ls -l'
 
+# Always colorize tree output
+alias tree='tree -C'
+
+# Override rm for safer alternative
 alias rm='trash-put'
 
+# Use GitHub shortcuts automatically
 alias git='hub'
 alias g='git'
 
@@ -64,6 +70,11 @@ alias yud='y update'
 alias yif='yum info'
 
 alias ip='curl -s http://checkip.dyndns.com | sed "s/[^0-9\.]//g"'
+
+alias getvideo='youtube-dl'
+function getmp3() {
+  youtube-dl $1 --extract-audio --title --audio-format mp3
+}
 
 # gc this is my commit message
 # Stages all modified files in the Git repo, commits them with the arguments
