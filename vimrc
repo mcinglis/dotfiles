@@ -1,7 +1,14 @@
 
-set nocompatible            " be vimproved!
-syntax on                   " enable syntax highlighting
-set encoding=utf-8          " default to UTF8 encoding
+" Be Vimproved!
+" Must be first, as it changes the behavior of other settings.
+set nocompatible
+
+" Sane text files
+set fileformat=unix
+set encoding=utf-8
+
+" Enable syntax highlighting
+syntax on
 
 let mapleader=';'
 nnoremap ' :
@@ -70,6 +77,9 @@ Bundle 'tpope/vim-repeat'
 " support for pandoc's extended markdown
 " Bundle 'vim-pandoc/vim-pandoc'
 
+" support for handlebars templates
+Bundle 'nono/vim-handlebars'
+
 filetype plugin indent on   " load filetype plugins and indentation
 
 "" Autocmd
@@ -89,6 +99,8 @@ if has("autocmd")
 
     autocmd BufNewFile,BufRead *.ino setlocal filetype=arduino
 
+    autocmd BufNewFile,BufRead *.md,*.markdown setlocal filetype=markdown
+
     autocmd BufNewFile,BufRead Gemfile set filetype=ruby
 
     " File types that should only use two spaces for tabs
@@ -96,7 +108,6 @@ if has("autocmd")
           \ setlocal shiftwidth=2 |
           \ setlocal softtabstop=2 |
           \ setlocal smartindent
-
 
     autocmd FileType python 
           \ setlocal textwidth=79 |
@@ -138,7 +149,7 @@ if has("autocmd")
           \ setlocal expandtab
 
     " Use flavored markdown by default in all markdown files
-    au BufNewFile,BufRead *.md,*.markdown
+    autocmd FileType markdown
           \ setlocal filetype=ghmarkdown |
           \ setlocal wrap |
           \ setlocal linebreak |
@@ -150,16 +161,24 @@ if has("autocmd")
 endif
 
 "" Display
+" Display line numbers
+" set number
 set background=dark         " dark terminal colours by default
 set title                   " show file name in title bar
-set wildmenu                " tab completion with menu
+" Tab completion for file and buffers
+set wildmenu
 set wildignore+=*.o,*.pyc,*.jpg,*.jpeg,*.png,*.gif,node_modules/**,*.class
-set scrolloff=5             " don't let cursor get to top of screen
+" Keep more context when scrolling off the end of a buffer
+set scrolloff=3
 
 "" Whitespace
 set nowrap                        " don't wrap long lines
-set tabstop=2 shiftwidth=2        " spaces used for tabs and auto-indentation
-set expandtab                     " use spaces instead of tabs
+" By default, display tabs as this many spaces
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
+" Insert spaces instead of tabs.
+set expandtab
 set smarttab                      " smart tab handling for indenting
 set smartindent                   " smart indentation rules
 set textwidth=79                  " when to break lines
@@ -189,6 +208,12 @@ if has("gui_running")
     set guioptions=ac
     set number                  " show line numbers
 endif
+
+"" Non-plugin commands
+
+" Save a file with sudo permissions from a non-sudo vim session
+command W :execute ':silent w !sudo tee % > /dev/null' | :edit!
+command Wq :execute ':W' | :q
 
 "" Non-plugin shortcuts
 
