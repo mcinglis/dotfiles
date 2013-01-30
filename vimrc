@@ -204,7 +204,7 @@ au FileType markdown,rst,text,gitcommit
 "   SETTINGS
 " #########################################################
 
-colorscheme lucius
+colorscheme Tomorrow-Night
 
 " Show the file name in the terminal's title bar.
 set title
