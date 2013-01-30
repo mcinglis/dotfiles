@@ -1,244 +1,218 @@
 
-" Be Vimproved!
-" Must be first, as it changes the behavior of other settings.
+" Use Vim settings, rather than Vi settings (much better!).
+" This must be first, because it changes other options as a side effect.
 set nocompatible
 
-" Sane text files
-set fileformat=unix
-set encoding=utf-8
-
-" Enable syntax highlighting
-syntax on
-
+" Set mapleader here so that plugins map to the intended key.
 let mapleader=';'
-nnoremap ' :
 
-"" Plugins
+" #########################################################
+"   PLUG-INS
+" #########################################################
 
-filetype off                " temporary for Vundle
+" Vundle needs the filetype detection to be temporarily off.
+" It is reactivated at the end of the plug-ins section.
+filetype off
+
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
-" let Vundle manage itself (required)
+" Vundle needs to manage itself.
 Bundle 'gmarik/vundle'
-map <Leader>vi :so %<CR>:BundleInstall<CR>
-map <Leader>vc :so %<CR>:BundleClean<CR>
 
-" Vundle help: (:h vundle for more details)
-"   :BundleList         - list configured bundles
-"   :BundleInstall      - install (or update) bundles
-"   :BundleSearch foo   - search for foo
-"   :BundleClean        - remove unused bundles
+" Defaults everyone can agree on
+Bundle 'tpope/vim-sensible'
 
-" easy file opening
+" Heuristically set whitespace options.
+Bundle 'tpope/vim-sleuth'
+
+" Readline key bindings in insert and command modes
+Bundle 'tpope/vim-rsi'
+
+" Pairs of handy bracket mappings
+Bundle 'tpope/vim-unimpaired'
+
+" Manipulate surrounding text
+Bundle 'tpope/vim-surround'
+
+" Manipulate multiple variants of a word
+Bundle 'tpope/vim-abolish'
+
+" Use Ctrl-A/Ctrl-X to increment and decrement dates, times and more
+Bundle 'tpope/vim-speeddating'
+
+" Repeat plug-in maps too with '.'
+Bundle 'tpope/vim-repeat'
+
+" Reveal more information about characters on pressing `ga`
+Bundle 'tpope/vim-characterize'
+
+" Commands that wrap some UNIX shell commands
+Bundle 'tpope/vim-eunuch'
+
+" Wisely end control structures, like 'end' in Ruby
+Bundle 'tpope/vim-endwise'
+
+" Highlight and remove trailing whitespace
+Bundle 'bitc/vim-bad-whitespace'
+
+" Syntax checking
+Bundle 'scrooloose/syntastic'
+let g:syntastic_check_on_open=1
+
+" Comment out stuff
+Bundle 'tomtom/tcomment_vim'
+nmap // :TComment<CR>
+vmap // :TComment<CR>
+
+" Super-quick file opening.
 Bundle 'wincent/Command-T'
 
-" commenting
-Bundle 'tomtom/tcomment_vim'
-noremap // :TComment<CR> 
-vnoremap // :TComment<CR>
+" A Git wrapper so awesome, it should be illegal.
+Bundle 'tpope/vim-fugitive'
 
-" JSHint integration, etc.
-Bundle 'scrooloose/syntastic' 
-let g:syntastic_check_on_open=1
-let g:syntastic_auto_jump=1
+" Commands that interface with common web protocols
+Bundle 'mattn/webapi-vim'
 
-" color schemes
+" Gist wrapper
+Bundle 'mattn/gist-vim'
+
+" ######
+"   LANGUAGE SUPPORT
+" #######
+
+" Set 'path' for JVM languages from the Java class path
+Bundle 'tpope/vim-classpath'
+
+" Rails
+Bundle 'tpope/vim-rails'
+
+" Rake
+Bundle 'tpope/vim-rake'
+
+" Bundler
+Bundle 'tpope/vim-bundler'
+
+" Haskell analysis
+Bundle 'bitc/vim-hdevtools'
+
+" Clojure
+Bundle 'guns/vim-clojure-static'
+
+" Clojure REPL
+Bundle 'tpope/vim-foreplay'
+
+" Arduino
+Bundle 'kingbin/vim-arduino'
+
+" JavaScript
+Bundle 'pangloss/vim-javascript'
+
+" CoffeeScript
+Bundle 'kchmck/vim-coffee-script'
+
+" JSON
+Bundle 'leshill/vim-json'
+
+" Haml, Sass and SCSS
+Bundle 'tpope/vim-haml'
+
+" LESS
+Bundle 'groenewege/vim-less'
+
+" Handlebars
+Bundle 'nono/vim-handlebars'
+
+" Jinja
+Bundle 'lepture/vim-jinja'
+
+" Markdown
+Bundle 'tpope/vim-markdown'
+
+" #######
+"   COLOR SCHEMES
+" #######
+
 Bundle 'Lucius'
 Bundle 'altercation/vim-colors-solarized'
 
-" better javascript
-Bundle 'pangloss/vim-javascript'
 
-" coffeescript highlighting
-Bundle 'kchmck/vim-coffee-script'
+" #########################################################
+"   MAPPINGS
+" #########################################################
 
-" clojure support
-Bundle 'VimClojure'
-
-" less highlighting
-Bundle 'groenewege/vim-less'
-
-" arduino syntax highlighting
-Bundle 'vim-scripts/Arduino-syntax-file'
-
-" support for markdown with GitHub code blocks and inline code
-Bundle 'jtratner/vim-flavored-markdown'
-
-" support for markdown
-" Bundle 'tpope/vim-markdown'
-
-" easy surrounding manipulation
-Bundle 'tpope/vim-surround'
-
-" repeat supported plugin maps with .
-Bundle 'tpope/vim-repeat'
-
-" support for pandoc's extended markdown
-" Bundle 'vim-pandoc/vim-pandoc'
-
-" support for handlebars templates
-Bundle 'nono/vim-handlebars'
-
-filetype plugin indent on   " load filetype plugins and indentation
-
-"" Autocmd
-if has("autocmd")
-    " override the filetype plugin from setting formatoptions
-    " autocmd FileType * set fo=crqla
-    " http://vimdoc.sourceforge.net/htmldoc/change.html#fo-table
-
-    " save files when vim loses focus
-    autocmd FocusLost * silent! wa
-
-    autocmd BufNewFile,BufRead *.jinja setlocal filetype=jinja
-    autocmd BufNewFile,BufRead *.html.jinja setlocal filetype=htmljinja
-
-    autocmd BufNewFile,BufRead *.json setlocal filetype=javascript
-    autocmd BufNewFile,BufRead .jshintrc setlocal filetype=javascript
-
-    autocmd BufNewFile,BufRead *.ino setlocal filetype=arduino
-
-    autocmd BufNewFile,BufRead *.md,*.markdown setlocal filetype=markdown
-
-    autocmd BufNewFile,BufRead Gemfile set filetype=ruby
-
-    " File types that should only use two spaces for tabs
-    autocmd FileType html,xml,css,scss,javascript,coffee,eco,php,ruby,eruby,sql,sh,conf
-          \ setlocal shiftwidth=2 |
-          \ setlocal softtabstop=2 |
-          \ setlocal smartindent
-
-    autocmd FileType python 
-          \ setlocal textwidth=79 |
-          \ setlocal shiftwidth=4 |
-          \ setlocal tabstop=4 |
-          \ setlocal expandtab |
-          \ setlocal softtabstop=4 |
-          \ setlocal shiftround |
-          \ setlocal colorcolumn=79 |
-          \ map <Leader>p :!python<CR> |
-          \ map <Leader>x :!python %<CR>
-
-    autocmd FileType ruby
-          \ setlocal textwidth=79 |
-          \ setlocal shiftwidth=2 |
-          \ setlocal tabstop=2 |
-          \ setlocal softtabstop=2 |
-          \ setlocal smartindent |
-          \ setlocal expandtab |
-          \ setlocal shiftround |
-          \ setlocal colorcolumn=80
-
-    autocmd FileType javascript
-          \ setlocal textwidth=79 |
-          \ setlocal shiftwidth=2 |
-          \ setlocal tabstop=2 |
-          \ setlocal softtabstop=2 |
-          \ setlocal expandtab |
-          \ setlocal shiftround |
-          \ setlocal smartindent |
-          \ setlocal colorcolumn=80
-
-    autocmd FileType c,cpp
-          \ setlocal textwidth=79 |
-          \ setlocal shiftwidth=4 |
-          \ setlocal tabstop=4 |
-          \ setlocal softtabstop=4 |
-          \ setlocal smartindent |
-          \ setlocal expandtab
-
-    " Use flavored markdown by default in all markdown files
-    autocmd FileType markdown
-          \ setlocal filetype=ghmarkdown |
-          \ setlocal wrap |
-          \ setlocal linebreak |
-          \ setlocal nolist |
-          \ setlocal textwidth=0 |
-          \ setlocal wrapmargin=0 |
-          \ setlocal formatoptions+=l |
-          \ setlocal spell
-
-    autocmd FileType gitcommit
-          \ setlocal textwidth=72 |
-          \ setlocal spell
-endif
-
-"" Display
-" Display line numbers
-" set number
-set background=dark         " dark terminal colours by default
-set title                   " show file name in title bar
-" Tab completion for file and buffers
-set wildmenu
-set wildignore+=*.o,*.pyc,*.jpg,*.jpeg,*.png,*.gif,node_modules/**,*.class
-" Keep more context when scrolling off the end of a buffer
-set scrolloff=3
-
-"" Whitespace
-set nowrap                        " don't wrap long lines
-" By default, display tabs as this many spaces
-set tabstop=2
-set softtabstop=2
-set shiftwidth=2
-" Insert spaces instead of tabs.
-set expandtab
-set smarttab                      " smart tab handling for indenting
-set smartindent                   " smart indentation rules
-set textwidth=79                  " when to break lines
-set backspace=indent,eol,start    " backspace over everything
-
-"" Searching
-set incsearch         " search incrementally (while typing)
-set ignorecase        " case insensitive searching
-set smartcase         " but become case sensitive if uppercase
-
-"" Misc
-" set autochdir                   " automatically change to directory of file
-set vb t_vb=                    " turn off bell sound on error
-set backupdir=~/.vim/sessions   " where to store backup files
-set directory=~/.vim/sessions   " where to store the swap file
-set undofile                    " enable persistent undo
-set undodir=~/.vim/undodir      " where to store the persistent undo files
-set history=1024                " keep 1024 lines of command history
-set autowriteall                " automatically save buffer on switching
-
-"" GUI options
-if has("gui_running")
-    colorscheme Tomorrow-Night
-    set lines=52 columns=83
-    set cursorline              " highlight the line the cursor is on
-    set guifont=Source\ Code\ Pro\ 9
-    set guioptions=ac
-    set number                  " show line numbers
-endif
-
-"" Non-plugin commands
+nmap ' :
 
 " Save a file with sudo permissions from a non-sudo vim session
 command W :execute ':silent w !sudo tee % > /dev/null' | :edit!
 command Wq :execute ':W' | :q
 
-"" Non-plugin shortcuts
+" Quickly open up the vimrc
+nmap <Leader>v :edit $VIMRC<CR>
 
-map <Leader>r :so %<CR>
-
-" easier saving
-map <Leader>s :w<CR>
-
-" hide search matches
-nnoremap <Leader><Space> :nohlsearch<CR>
-
-" restore visual selection on indenting.
+" Restore visual selection on indenting
 vmap < <gv
 vmap > >gv
 
-" select the just-pasted text
-nnoremap <Leader>v V`]
+" Buffer navigation and control
+nmap <Leader>[ :bprevious<CR>
+nmap <Leader>] :bnext<CR>
+nmap <Leader>\ :bdelete<CR>
+nmap <Leader>= :ls<CR>
 
-" easy buffer navigation and control
-map <Leader>[ :bprevious<CR>
-map <Leader>] :bnext<CR>
-map <Leader>\ :bdelete<CR>
-map <Leader>= :ls<CR>
+" Strip whitespace
+nmap <Leader>w :EraseBadWhitespace<CR>
+
+" Toggle spell-checking
+nmap <Leader>s :set spell!<CR>
+
+" #########################################################
+"   AUTOCOMMANDS
+" #########################################################
+
+" sleuth.vim incorrectly determines .vimrc to be shiftwidth=6.
+au BufEnter,BufRead vimrc,.vimrc
+      \ setlocal shiftwidth=2
+
+au FileType python
+      \ setlocal shiftwidth=4 |
+      \ setlocal colorcolumn=80
+
+au FileType ruby
+      \ setlocal shiftwidth=2 |
+      \ setlocal colorcolumn=80
+
+au FileType javascript
+      \ setlocal shiftwidth=2 |
+      \ setlocal colorcolumn=80
+
+au FileType c,cpp,java
+      \ setlocal shiftwidth=4 |
+      \ setlocal colorcolumn=80
+
+" Give files with .txt extensions their own filetypes.
+au BufEnter,BufRead *.txt
+      \ setlocal filetype=text
+
+" For filetypes used for writing, wrap long lines by breaking at words.
+au FileType markdown,rst,text,gitcommit
+      \ setlocal wrap |
+      \ setlocal linebreak
+
+
+" #########################################################
+"   SETTINGS
+" #########################################################
+
+colorscheme lucius
+
+" Show the file name in the terminal's title bar.
+set title
+
+" Don't display long lines by wrapping them
+set nowrap
+
+" If sleuth.vim fails to heuristically set indentation settings, use this.
+set expandtab
+set shiftwidth=2
 
