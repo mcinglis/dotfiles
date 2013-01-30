@@ -5,6 +5,7 @@
   helper = cache --timeout=86400
 [core]
   editor = vim
+	pager = less -+S
 [color]
   ui = true
 [push]
@@ -25,6 +26,3 @@
   s = status
   sh = stash
   rao = remote add origin
-
-[hub]
-  protocol = https

@@ -158,6 +158,10 @@ if has("autocmd")
           \ setlocal wrapmargin=0 |
           \ setlocal formatoptions+=l |
           \ setlocal spell
+
+    autocmd FileType gitcommit
+          \ setlocal textwidth=72 |
+          \ setlocal spell
 endif
 
 "" Display

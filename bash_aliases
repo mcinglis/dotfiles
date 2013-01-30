@@ -42,6 +42,9 @@ alias yu='y upgrade'
 alias yud='y update'
 alias yif='yum info'
 
+# colorful cowful fortune
+alias lol='fortune | cowsay | lolcat'
+
 # easy extraction of archives based on type
 alias unpk='aunpack'
 alias pk='apack'
@@ -113,9 +116,9 @@ function cd() {
   fi
 }
 
+# simple command-line alarm application
 function alarm() {
   when="$1"
   message="${*:2}"
   echo "notify-send Alarm $message" | at "$when"
 }
-
