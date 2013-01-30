@@ -144,7 +144,7 @@ Bundle 'altercation/vim-colors-solarized'
 nmap ' :
 
 " Save a file with sudo permissions from a non-sudo vim session
-command W :execute ':silent w !sudo tee % > /dev/null' | :edit!
+command W :execute ':w !sudo tee %'
 command Wq :execute ':W' | :q
 
 " Quickly open up the vimrc

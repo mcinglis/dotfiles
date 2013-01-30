@@ -1,13 +1,23 @@
 [user]
   name = Malcolm Inglis
   email = me@minglis.id.au
+
+[hub]
+  protocol = https
+
+[github]
+  user = zenmunki
+
 [credential]
   helper = cache --timeout=86400
+
 [core]
   editor = vim
-	pager = less -+S
+  pager = less -+S
+
 [color]
   ui = true
+
 [push]
   default = simple
 
