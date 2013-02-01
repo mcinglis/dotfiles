@@ -31,6 +31,9 @@ Bundle 'tpope/vim-rsi'
 
 " Pairs of handy bracket mappings
 Bundle 'tpope/vim-unimpaired'
+" [a, ]a        move between files
+" [b, ]b        move between buffers
+" [e, ]e        move lines up and down
 
 " Manipulate surrounding text
 Bundle 'tpope/vim-surround'
@@ -55,6 +58,7 @@ Bundle 'tpope/vim-endwise'
 
 " Highlight and remove trailing whitespace
 Bundle 'bitc/vim-bad-whitespace'
+nnoremap <Leader>e :EraseBadWhitespace<CR>
 
 " Syntax checking
 Bundle 'scrooloose/syntastic'
@@ -62,8 +66,8 @@ let g:syntastic_check_on_open=1
 
 " Comment out stuff
 Bundle 'tomtom/tcomment_vim'
-nmap // :TComment<CR>
-vmap // :TComment<CR>
+nnoremap // :TComment<CR>
+vnoremap // :TComment<CR>
 
 " Super-quick file opening.
 Bundle 'wincent/Command-T'
@@ -76,6 +80,12 @@ Bundle 'mattn/webapi-vim'
 
 " Gist wrapper
 Bundle 'mattn/gist-vim'
+
+" Delete buffers without closing windows with :BD
+Bundle 'bufkill.vim'
+
+" Maintain settings across editors
+" Bundle 'editorconfig/editorconfig-vim'
 
 " ######
 "   LANGUAGE SUPPORT
@@ -143,28 +153,43 @@ Bundle 'altercation/vim-colors-solarized'
 
 nmap ' :
 
-" Save a file with sudo permissions from a non-sudo vim session
-command W :execute ':w !sudo tee %'
-command Wq :execute ':W' | :q
+" Save a file with sudo permissions from a non-sudo Vim session
+command! W :execute ':w !sudo tee %'
+command! Wq :execute ':W' | :q
 
-" Quickly open up the vimrc
-nmap <Leader>v :edit $VIMRC<CR>
+" Faster window switching
+noremap <C-j> <C-w>j
+noremap <C-k> <C-w>k
+noremap <C-h> <C-w>h
+noremap <C-l> <C-w>l
 
-" Restore visual selection on indenting
-vmap < <gv
-vmap > >gv
+" Faster window resizing
+nnoremap + <C-w>+
+nnoremap - <C-w>-
 
-" Buffer navigation and control
-nmap <Leader>[ :bprevious<CR>
-nmap <Leader>] :bnext<CR>
-nmap <Leader>\ :bdelete<CR>
-nmap <Leader>= :ls<CR>
+" Faster viewport scrolling
+nnoremap <C-e> 3<C-e>
+nnoremap <C-y> 3<C-y>
 
-" Strip whitespace
-nmap <Leader>w :EraseBadWhitespace<CR>
+" Toggle showing whitespace
+nnoremap <Leader>l :set list!<CR>
 
 " Toggle spell-checking
-nmap <Leader>s :set spell!<CR>
+nnoremap <Leader>s :set spell!<CR>
+
+" Quickly open and source the .vimrc
+nnoremap <Leader>ve :edit $VIMRC<CR>
+nnoremap <Leader>vs :source $VIMRC<CR>
+
+" Buffer navigation and control
+nnoremap <Leader>[ :bprevious<CR>
+nnoremap <Leader>] :bnext<CR>
+nnoremap <Leader>\ :BD<CR>
+nnoremap <Leader>= :ls<CR>
+
+" Restore visual selection on indenting
+vnoremap < <gv
+vnoremap > >gv
 
 " #########################################################
 "   AUTOCOMMANDS
@@ -186,13 +211,27 @@ au FileType javascript
       \ setlocal shiftwidth=2 |
       \ setlocal colorcolumn=80
 
+au FileType json
+      \ setlocal smartindent
+
+au BufEnter,BufRead .jshintrc
+      \ setlocal filetype=json
+
 au FileType c,cpp,java
       \ setlocal shiftwidth=4 |
       \ setlocal colorcolumn=80
 
+" Set the filetype to text if none is set already.
+" This is a work-around for Vim help files keeping their syntax.
+function! SetTextFiletypeIfNone()
+  if &filetype == ''
+    setlocal filetype=text
+  endif
+endfunction
+
 " Give files with .txt extensions their own filetypes.
-au BufEnter,BufRead *.txt
-      \ setlocal filetype=text
+au BufEnter,BufRead *.txt,*.text
+      \ call SetTextFiletypeIfNone()
 
 " For filetypes used for writing, wrap long lines by breaking at words.
 au FileType markdown,rst,text,gitcommit
@@ -204,6 +243,8 @@ au FileType markdown,rst,text,gitcommit
 "   SETTINGS
 " #########################################################
 
+" set background=dark
+" colorscheme lucius
 colorscheme Tomorrow-Night
 
 " Show the file name in the terminal's title bar.

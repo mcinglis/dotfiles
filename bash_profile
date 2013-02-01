@@ -13,6 +13,7 @@ export LC_COLLATE=C
 
 export EDITOR=vim
 export EDITOR_CONFIG=~/.vimrc
+export VIMRC=$EDITOR_CONFIG
 
 export SHELL_CONFIG=~/.bash_profile
 
