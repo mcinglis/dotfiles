@@ -19,6 +19,8 @@ call vundle#rc()
 
 " Vundle needs to manage itself.
 Bundle 'gmarik/vundle'
+nnoremap <Leader>vbc :BundleClean<CR>
+nnoremap <Leader>vbi :BundleInstall<CR>
 
 " Defaults everyone can agree on
 Bundle 'tpope/vim-sensible'
@@ -31,9 +33,6 @@ Bundle 'tpope/vim-rsi'
 
 " Pairs of handy bracket mappings
 Bundle 'tpope/vim-unimpaired'
-" [a, ]a        move between files
-" [b, ]b        move between buffers
-" [e, ]e        move lines up and down
 
 " Manipulate surrounding text
 Bundle 'tpope/vim-surround'
@@ -84,6 +83,9 @@ Bundle 'mattn/gist-vim'
 " Delete buffers without closing windows with :BD
 Bundle 'bufkill.vim'
 
+" Vim motions on speed!
+Bundle 'Lokaltog/vim-easymotion'
+
 " Maintain settings across editors
 " Bundle 'editorconfig/editorconfig-vim'
 
@@ -111,6 +113,12 @@ Bundle 'guns/vim-clojure-static'
 
 " Clojure REPL
 Bundle 'tpope/vim-foreplay'
+
+" Rust
+Bundle 'reusee/vim.rust'
+
+" Go
+set rtp+=$GOROOT/misc/vim
 
 " Arduino
 Bundle 'kingbin/vim-arduino'
@@ -143,19 +151,17 @@ Bundle 'tpope/vim-markdown'
 "   COLOR SCHEMES
 " #######
 
-Bundle 'Lucius'
+Bundle 'jonathanfilip/vim-lucius'
 Bundle 'altercation/vim-colors-solarized'
 
+filetype plugin indent on
+syntax on
 
 " #########################################################
 "   MAPPINGS
 " #########################################################
 
 nmap ' :
-
-" Save a file with sudo permissions from a non-sudo Vim session
-command! W :execute ':w !sudo tee %'
-command! Wq :execute ':W' | :q
 
 " Faster window switching
 noremap <C-j> <C-w>j
@@ -195,9 +201,9 @@ vnoremap > >gv
 "   AUTOCOMMANDS
 " #########################################################
 
-" sleuth.vim incorrectly determines .vimrc to be shiftwidth=6.
-au BufEnter,BufRead vimrc,.vimrc
-      \ setlocal shiftwidth=2
+au FileType vim
+      \ setlocal shiftwidth=2 |
+      \ HideBadWhitespace
 
 au FileType python
       \ setlocal shiftwidth=4 |
@@ -205,7 +211,9 @@ au FileType python
 
 au FileType ruby
       \ setlocal shiftwidth=2 |
-      \ setlocal colorcolumn=80
+      \ setlocal colorcolumn=80 |
+      \ inoremap ' " |
+      \ imap ";" '
 
 au FileType javascript
       \ setlocal shiftwidth=2 |
@@ -220,6 +228,14 @@ au BufEnter,BufRead .jshintrc
 au FileType c,cpp,java
       \ setlocal shiftwidth=4 |
       \ setlocal colorcolumn=80
+
+au FileType go
+      \ setlocal noexpandtab |
+      \ command! GoRun execute '!go run %'
+au FileType go noremap <Leader>f :Fmt<CR>
+au FileType go noremap <Leader>r :GoRun<CR>
+au FileType go noremap <Leader>d :Drop 
+au FileType go noremap <Leader>i :Import 
 
 " Set the filetype to text if none is set already.
 " This is a work-around for Vim help files keeping their syntax.
@@ -256,4 +272,7 @@ set nowrap
 " If sleuth.vim fails to heuristically set indentation settings, use this.
 set expandtab
 set shiftwidth=2
+
+" I really hate folding
+set nofoldenable
 

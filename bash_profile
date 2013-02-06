@@ -4,10 +4,6 @@
 ### ENVIRONMENT VARIABLES
 ###
 
-export PATH=~/.local/bin:~/.rbenv/bin:$PATH
-
-eval "$(rbenv init -)"
-
 # Sort strings by special characters before uppercase before lowercase
 export LC_COLLATE=C
 
@@ -22,6 +18,13 @@ export PS1='\[\033[01;34m\]\w\[\033[00m\]\$ '
 
 # Change the terminal title to be the current working directory
 export PROMPT_COMMAND='echo -ne "\033]0;${PWD/$HOME/~}\007"'
+
+export GOROOT=~/.local/lib/go
+export GOBIN=$GOROOT/bin
+
+export PATH=~/.local/bin:~/.rbenv/bin:$GOBIN:$PATH
+
+eval "$(rbenv init -)"
 
 ###
 ### OPTIONS
@@ -62,6 +65,8 @@ alias rm='trash-put'
 alias git='hub'
 
 alias g='git'
+
+alias be='bundle exec'
 
 # Get to my notes directory easily
 alias n='cd ~/notes && e .'
