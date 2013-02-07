@@ -105,6 +105,10 @@ Bundle 'tpope/vim-rake'
 " Bundler
 Bundle 'tpope/vim-bundler'
 
+" Python autocompletion
+Bundle 'davidhalter/jedi-vim'
+let g:jedi#use_tabs_not_buffers = 1
+
 " Haskell analysis
 Bundle 'bitc/vim-hdevtools'
 
@@ -212,8 +216,8 @@ au FileType python
 au FileType ruby
       \ setlocal shiftwidth=2 |
       \ setlocal colorcolumn=80 |
-      \ inoremap ' " |
-      \ imap ";" '
+au FileType ruby inoremap ' "
+au FileType ruby inoremap <C-v>' '
 
 au FileType javascript
       \ setlocal shiftwidth=2 |
