@@ -27,6 +27,7 @@
   br = branch
   c = commit
   cm = commit -m
+  cma = commit -a -m
   co = checkout
   cob = checkout -b
   cl = clone

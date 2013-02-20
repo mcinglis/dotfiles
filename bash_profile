@@ -13,6 +13,8 @@ export VIMRC=$EDITOR_CONFIG
 
 export SHELL_CONFIG=~/.bash_profile
 
+export IDEAS_DIR=~/dev/ideas
+
 # Simple, clean prompt
 export PS1='\[\033[01;34m\]\w\[\033[00m\]\$ '
 
@@ -45,7 +47,7 @@ shopt -s nocaseglob
 alias s='sudo'
 
 alias e=$EDITOR
-alias se='sudo e'
+alias se='sudo $EDITOR'
 
 alias o='xdg-open'
 
@@ -61,6 +63,12 @@ alias lr='tree -C | less -R'
 # Make rm send things to the trash, and not permanently delete them.
 alias rm='trash-put'
 
+# Tmux shortcuts
+alias tn='tmux new -s'
+alias td='tmux detach'
+alias ta='tmux attach -t'
+alias ts='tmux list-sessions'
+
 # Extend Git with GitHub shortcuts
 alias git='hub'
 
@@ -74,6 +82,7 @@ alias n='cd ~/notes && e .'
 # Open up my editor's config file
 alias erc='e $EDITOR_CONFIG'
 alias shrc='e $SHELL_CONFIG'
+alias ideas='e $IDEAS_DIR'
 
 alias y='sudo yum'
 alias yi='y install'
