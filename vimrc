@@ -4,7 +4,7 @@
 set nocompatible
 
 " Set leader keys here so that plugins map to the intended key.
-let mapleader=','
+let mapleader = ' '
 
 " #########################################################
 "   PLUG-INS
@@ -79,11 +79,13 @@ let g:syntastic_mode_map = { 'mode': 'active',
 
 " Comment out stuff
 Bundle 'tomtom/tcomment_vim'
-noremap <Leader>c :TComment<CR>
+noremap // :TComment<CR>
 
 " Fuzzy file, buffer, most-recently-used, tag, ... finder
 Bundle 'kien/ctrlp.vim'
 let g:ctrlp_map = '\'
+let g:ctrlp_user_command = 'ag --nogroup --nobreak --noheading --nocolor -g "" %s'
+noremap <Bar> :CtrlPBuffer<CR>
 
 " Text filtering and alignment
 Bundle 'godlygeek/tabular'
@@ -94,6 +96,12 @@ noremap <Leader>a, :Tabularize /,\zs<CR>
 
 " Vim motions on speed!
 Bundle 'Lokaltog/vim-easymotion'
+let g:EasyMotion_leader_key = '<Leader><Leader>'
+nmap s <Leader><Leader>w
+nmap S <Leader><Leader>b
+
+" Code completion engine for Vim
+" Bundle 'Valloric/YouCompleteMe'
 
 " Maintain settings across editors
 " Bundle 'editorconfig/editorconfig-vim'
@@ -102,9 +110,9 @@ Bundle 'Lokaltog/vim-easymotion'
 Bundle 'Lokaltog/vim-powerline'
 
 " Tree explorer plugin for vim
-Bundle 'scrooloose/nerdtree'
-noremap <Leader>e :NERDTreeToggle<CR>
-au BufEnter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary")
+" Bundle 'scrooloose/nerdtree'
+" noremap <Leader>e :NERDTreeToggle<CR>
+" au BufEnter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary")
 
 " ######
 "   COLORSCHEMES
@@ -135,8 +143,8 @@ Bundle 'tpope/vim-bundler'
 Bundle 'tpope/vim-cucumber'
 
 " Python autocompletion
-Bundle 'davidhalter/jedi-vim'
-let g:jedi#use_tabs_not_buffers = 1
+" Bundle 'davidhalter/jedi-vim'
+" let g:jedi#use_tabs_not_buffers = 1
 
 " Clojure
 Bundle 'guns/vim-clojure-static'
@@ -243,6 +251,10 @@ noremap <Right> <NOP>
 vnoremap < <gv
 vnoremap > >gv
 
+" Save the file with just Enter in Normal mode; yell if I forget.
+nnoremap <CR> :write<CR>
+cabbrev w nope
+
 " Faster window switching
 noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
@@ -257,11 +269,14 @@ noremap <Leader>ve :edit $VIMRC<CR>
 noremap <Leader>vs :source $VIMRC<CR>
 
 " Easy toggling
+noremap <Leader>th :setlocal hlsearch!<CR>
 noremap <Leader>tl :setlocal list!<CR>
 noremap <Leader>tn :setlocal number!<CR>
 noremap <Leader>tp :setlocal paste!<CR>
 noremap <Leader>ts :setlocal spell!<CR>
 
+" Easy wrapping of lines
+noremap <Leader>wl :setlocal wrap! linebreak!<CR>
 
 " #########################################################
 "   AUTOCOMMANDS
@@ -278,10 +293,7 @@ au FileType python
 
 au FileType ruby
       \ setlocal shiftwidth=2 |
-      \ setlocal colorcolumn=80 |
-" Remap ' to " in Ruby files; saves pressing shift a lot.
-au FileType ruby inoremap ' "
-au FileType ruby inoremap <C-v>' '
+      \ setlocal colorcolumn=80
 
 au BufEnter,BufRead Guardfile setlocal filetype=ruby
 
@@ -302,10 +314,10 @@ au FileType c,cpp,java
 au FileType go
       \ setlocal noexpandtab |
       \ command! GoRun execute '!go run %'
-au FileType go noremap <LocalLeader>f :Fmt<CR>
-au FileType go noremap <LocalLeader>r :GoRun<CR>
-au FileType go noremap <LocalLeader>d :Drop<Space>
-au FileType go noremap <LocalLeader>i :Import<Space>
+au FileType go noremap <Leader>gf :Fmt<CR>
+au FileType go noremap <Leader>gr :GoRun<CR>
+au FileType go noremap <Leader>gd :Drop<Space>
+au FileType go noremap <Leader>gi :Import<Space>
 
 " Set the filetype to text if none is set already.
 " This is a work-around for Vim help files keeping their syntax.

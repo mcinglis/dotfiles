@@ -7,6 +7,9 @@
 # Sort strings by special characters before uppercase before lowercase
 export LC_COLLATE=C
 
+# Use correct colors for ls
+export LS_COLORS=
+
 export EDITOR=vim
 export EDITOR_CONFIG=~/.vimrc
 export VIMRC=$EDITOR_CONFIG
@@ -18,13 +21,16 @@ export IDEAS_DIR=~/dev/ideas
 # Simple, clean prompt
 export PS1='\[\033[01;34m\]\w\[\033[00m\]\$ '
 
+# This breaks autojump:
 # Change the terminal title to be the current working directory
-export PROMPT_COMMAND='echo -ne "\033]0;${PWD/$HOME/~}\007"'
+# export PROMPT_COMMAND='echo -ne "\033]0;${PWD/$HOME/~}\007"'
 
 export GOROOT=~/.local/lib/go
 export GOBIN=$GOROOT/bin
 
-export PATH=~/.local/bin:~/.rbenv/bin:$GOBIN:$PATH
+export PLAY_PATH=~/.local/lib/play
+
+export PATH=~/.local/bin:~/.rbenv/bin:$GOBIN:$PLAY_PATH:$PATH
 
 eval "$(rbenv init -)"
 
