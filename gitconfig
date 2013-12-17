@@ -1,40 +1,20 @@
 [user]
-  name = Malcolm Inglis
-  email = me@minglis.id.au
-
-[hub]
-  protocol = https
-
-[github]
-  user = zenmunki
-
-[credential]
-  helper = cache --timeout=86400
+	name = Malcolm Inglis
+	email = me@minglis.id.au
 
 [core]
-  editor = vim
-  pager = less -+S
+	editor = vim
+	pager = less -+S -iF
 
 [color]
-  ui = true
-
-[push]
-  default = simple
+	ui = true
 
 [alias]
-  a = add
-  aa = !git add -u && git add . && git status
-  br = branch
-  c = commit
-  cm = commit -m
-  cma = commit -a -m
-  co = checkout
-  cob = checkout -b
-  cl = clone
-  d = diff
-  l = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-  p = push
-  s = status
-  sh = stash
-  rao = remote add origin
+	l = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+	d = diff --word-diff
+	s = status
+	c = commit -am
+	p = push
 
+[push]
+	default = simple
