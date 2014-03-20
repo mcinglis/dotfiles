@@ -2,6 +2,9 @@
 	name = Malcolm Inglis
 	email = me@minglis.id.au
 
+[init]
+	templatedir = ~/.git_template
+
 [core]
 	editor = vim
 	pager = less -+S -iF
@@ -15,6 +18,8 @@
 	s = status
 	c = commit -am
 	p = push
+	ctags = !.git/hooks/ctags
 
 [push]
 	default = simple
+
