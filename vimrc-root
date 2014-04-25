@@ -173,12 +173,6 @@ autocmd FileType make
 autocmd FileType html
             \ setlocal shiftwidth=2
 
-" For filetypes used for writing, wrap long lines by breaking at words.
-autocmd FileType text,markdown,gitcommit,rst
-            \ setlocal wrap |
-            \ setlocal linebreak |
-            \ setlocal textwidth=80
-
 autocmd FileType gitcommit
             \ setlocal textwidth=72
 
