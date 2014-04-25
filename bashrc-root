@@ -1,0 +1,31 @@
+# .bashrc
+
+# User specific aliases and functions
+
+export EDITOR="vim"
+export PS1="\[\e[1;31m\]\w\[\e[m\]# "
+export LC_COLLATE="C"
+
+eval "$(dircolors -b)"
+
+alias rm="rm -i"
+alias cp="cp -i"
+alias mv="mv -i"
+alias o="xdg-open"
+alias ls="ls --color=auto --human-readable --group-directories-first"
+alias grep="grep --color=auto"
+
+shopt -s autocd
+shopt -s cdspell
+shopt -s cmdhist
+shopt -s dirspell
+shopt -s extglob
+shopt -s globstar
+shopt -s nocaseglob
+
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+    . /etc/bashrc
+fi
+

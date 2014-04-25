@@ -5,94 +5,6 @@ set nocompatible
 
 let mapleader=' '
 
-
-"""""""""""""""""""
-" PLUGINS
-"""""""""""""""""""
-
-" Prepare the Vundle plugin manager.
-filetype off
-set runtimepath+=~/.vim/bundle/vundle
-call vundle#rc()
-
-" Vundle needs to manage itself.
-Bundle 'gmarik/vundle'
-noremap <Leader>vc :BundleClean<CR>
-noremap <Leader>vi :BundleInstall<CR>
-noremap <Leader>vu :BundleUpdate<CR>
-
-" Defaults everyone can agree on.
-Bundle 'tpope/vim-sensible'
-
-" Repeat plug-in maps too with '.'.
-Bundle 'tpope/vim-repeat'
-
-" Handy complementary mappings.
-Bundle 'tpope/vim-unimpaired'
-
-" Manipulate surrounding text.
-Bundle 'tpope/vim-surround'
-
-" Increment and decrement dates and times with C-A and C-X.
-Bundle 'tpope/vim-speeddating'
-
-" Improve 'ga' to provide more character info.
-Bundle 'tpope/vim-characterize'
-
-" Commands that wrap shell commands.
-Bundle 'tpope/vim-eunuch'
-
-" Wisely end control structures.
-Bundle 'tpope/vim-endwise'
-
-" Hueristically set whitespace options.
-Bundle 'tpope/vim-sleuth'
-
-" Manipulate multiple variants of a word.
-Bundle 'tpope/vim-abolish'
-" :Abolish {despa,sepe}rat{e,es,ed,ing,ely,ion,ions,or} {despe,sepa}rat{}
-" :%Subvert/facilit{y,ies}/building{,s}/g
-" crs (snake case), crm (mixed case), crc (camel case), cru (upper case)
-noremap <Leader>ab :Abolish<Space>
-noremap <Leader>as :%Subvert/
-
-" A Git wrapper so awesome, it should be illegal.
-Bundle 'tpope/vim-fugitive'
-
-" Highlight and remove trailing whitespace.
-Bundle 'bitc/vim-bad-whitespace'
-noremap <Leader>we :EraseBadWhitespace<CR>
-noremap <Leader>wt :ToggleBadWhitespace<CR>
-
-" Syntax checking.
-Bundle 'scrooloose/syntastic'
-let g:syntastic_check_on_open=1
-let g:syntastic_c_checkers = [ 'make' ]
-let g:syntastic_python_python_exec = 'python3'
-
-" Quick universal comment toggling.
-Bundle 'tomtom/tcomment_vim'
-noremap // :TComment<CR>
-
-" Fuzzy file and buffer finder.
-Bundle 'kien/ctrlp.vim'
-let g:ctrlp_map = '\'
-nnoremap <Bar> :CtrlPBuffer<CR>
-nnoremap <Leader>t :CtrlPTag<CR>
-
-" Live preview of LaTeX files
-"Bundle 'xuhdev/vim-latex-live-preview'
-
-" Language plugins.
-Bundle 'vim-perl/vim-perl'
-Bundle 'tpope/vim-markdown'
-let g:markdown_fenced_languages = [ 'javascript', 'json=javascript',
-                                  \ 'ruby', 'c', 'sh', 'bash=sh', 'xml' ]
-Bundle 'chikamichi/mediawiki.vim'
-"Bundle 'tkztmk/vim-vala'
-"Bundle 'wting/rust.vim'
-
-" Finished registering plugins; switch filetype detection back on.
 filetype plugin indent on
 
 
@@ -169,7 +81,7 @@ set wildmode=longest,list
 
 " File patterns to ignore when autoexpanding file names.  This also effects
 " the Command-T plugin.
-set wildignore+=*.swp,*.swo,*.o,*.pyc,*.class,.git/*,.svn/*,*.dep.mk,_site/*
+set wildignore+=*.swp,*.swo,*.o,*.pyc,*.class,.git/*,.svn/*,*.dep.mk
 
 " When switching between buffers, jump to the first open window that contains
 " the specified buffer (if there is one).
@@ -261,9 +173,13 @@ autocmd FileType make
 autocmd FileType html
             \ setlocal shiftwidth=2
 
-autocmd FileType gitcommit
+" For filetypes used for writing, wrap long lines by breaking at words.
+autocmd FileType text,markdown,gitcommit,rst
             \ setlocal wrap |
             \ setlocal linebreak |
+            \ setlocal textwidth=80
+
+autocmd FileType gitcommit
             \ setlocal textwidth=72
 
 
@@ -271,13 +187,12 @@ autocmd FileType gitcommit
 " MAPPINGS
 """""""""""""""""""
 
+" Switch to the last-edited buffer with Ctrl-E.
+noremap <C-e> :e#<CR>
+
 " Save the file by pressing Enter in normal mode.
 noremap <CR> :write<CR>
 
-" Move cursor over visible lines, not real lines.
-noremap j gj
-noremap k gk
-
-" Switch to the last-edited buffer.
-nnoremap <Leader>e :e#<CR>
+" Edit the Vim configuration file.
+nnoremap <Leader>e :edit ~/.vimrc<CR>
 

@@ -4,10 +4,11 @@
 
 [[ -r /etc/bashrc ]] && source /etc/bashrc
 
-export PATH="$HOME/.local/bin:$HOME/software/.data/bin:$PATH"
 export EDITOR="vim"
 export PS1="\[\e[1;34m\]\w\[\e[m\]$ "
 export LC_COLLATE="C"
+export PYTHONSTARTUP="$HOME/.pystartup"
+export JEKYLL_SITE_PATH="$HOME/website"
 
 # Set up ls colors.
 eval "$(dircolors -b)"
@@ -16,6 +17,7 @@ alias o='xdg-open'
 alias ls="ls --color=auto --human-readable --group-directories-first"
 alias grep="grep --color=auto"
 alias g="git"
+alias pyi='python3-bpython'
 
 # Interpreted C!
 function runc() {
@@ -33,6 +35,13 @@ function ebash() {
     echo --------
     source $SCRIPT
 }
+
+# Convert RGB values to Hexadecimal.
+rgb2hex() {
+    printf '%x%x%x\n' $1 $2 $3
+}
+
+source ~/projects/shtag/shtag.sh
 
 # Type the name of a directory to `cd` into it.
 shopt -s autocd
