@@ -69,6 +69,8 @@ Bundle 'scrooloose/syntastic'
 let g:syntastic_check_on_open=1
 let g:syntastic_c_checkers = [ 'make' ]
 let g:syntastic_python_python_exec = 'python3'
+let g:syntastic_javascript_checkers = [ 'jshint' ]
+let g:syntastic_json_checkers = [ 'jsonlint' ]
 
 " Quick universal comment toggling.
 Bundle 'tomtom/tcomment_vim'
@@ -84,13 +86,14 @@ nnoremap <Leader>t :CtrlPTag<CR>
 "Bundle 'xuhdev/vim-latex-live-preview'
 
 " Language plugins.
+Bundle 'leshill/vim-json'
 Bundle 'vim-perl/vim-perl'
-Bundle 'tpope/vim-markdown'
-let g:markdown_fenced_languages = [ 'javascript', 'json=javascript',
-                                  \ 'ruby', 'c', 'sh', 'bash=sh', 'xml' ]
 Bundle 'chikamichi/mediawiki.vim'
 "Bundle 'tkztmk/vim-vala'
 "Bundle 'wting/rust.vim'
+Bundle 'tpope/vim-markdown'
+let g:markdown_fenced_languages = [ 'javascript', 'json',
+                                  \ 'ruby', 'c', 'sh', 'bash=sh', 'xml' ]
 
 " Finished registering plugins; switch filetype detection back on.
 filetype plugin indent on
@@ -140,6 +143,9 @@ set backspace=indent,eol,start
 
 " Insert two spaces after a '.', '?' and '!' with a join command.
 set joinspaces
+
+" Automatically break lines longer than this.
+set textwidth=79
 
 
 """ WHITESPACE
@@ -221,6 +227,15 @@ set winwidth=20
 " Don't display whitespace characters (by default).
 set nolist
 
+" Wrap lines longer than the window width.
+set wrap
+
+" Wrap lines at word boundaries.
+set linebreak
+
+" Start wrapped lines with:
+let &showbreak='↳ '
+
 
 """ SEARCHING
 
@@ -235,7 +250,6 @@ set incsearch
 set hlsearch
 
 
-
 """""""""""""""""""
 " AUTOCOMMANDS
 """""""""""""""""""
@@ -243,28 +257,30 @@ set hlsearch
 " Give files with .txt extensions their own filetypes, but only if they
 " haven't already been given a filetype.
 autocmd BufNewFile,BufRead *.txt,README,INSTALL,NEWS,TODO,LICENSE
-            \ if &filetype == "" | set filetype=text | endif
+            \ if &filetype == "" | setlocal filetype=text | endif
+
+autocmd FileType text,markdown,html
+            \ setlocal textwidth=0
 
 autocmd BufEnter,BufRead *.h
             \ setlocal filetype=c
 
 autocmd FileType c,cpp,java
-            \ setlocal textwidth=80 |
-            \ setlocal commentstring=//\ %s
-
-autocmd FileType python
-            \ setlocal textwidth=80
+            \ setlocal commentstring=//\ %s |
+            \ setlocal textwidth=77 |
+            \ setlocal shiftwidth=4
 
 autocmd FileType make
             \ setlocal noexpandtab
 
-autocmd FileType html
-            \ setlocal shiftwidth=2
-
 autocmd FileType gitcommit
-            \ setlocal wrap |
-            \ setlocal linebreak |
             \ setlocal textwidth=72
+
+autocmd FileType vim
+            \ setlocal shiftwidth=4
+
+autocmd BufNewFile,BufRead .jshintrc
+            \ setlocal filetype=json
 
 
 """""""""""""""""""
@@ -280,4 +296,14 @@ noremap k gk
 
 " Switch to the last-edited buffer.
 nnoremap <Leader>e :e#<CR>
+
+
+"""""""""""""""""""
+" SYNTAX
+"""""""""""""""""""
+
+autocmd Syntax c
+            \ syntax keyword cType schar uchar ushort uint ulong llong
+                                 \ ullong ldouble ord lssize_t |
+            \ syntax keyword cConstant LT EQ GT
 

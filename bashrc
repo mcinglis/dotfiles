@@ -41,7 +41,20 @@ rgb2hex() {
     printf '%x%x%x\n' $1 $2 $3
 }
 
-source ~/projects/shtag/shtag.sh
+
+jl() {
+    local link="$1"
+    local title="${2:-$(title-from-url "$1")}"
+    jekyll-link "$link" -t "$title"
+    cd ~/website
+    git add .
+    git commit -am "Add link \"$title\""
+    git push
+}
+
+
+source ~/projects/shtag/shtag.bash
+
 
 # Type the name of a directory to `cd` into it.
 shopt -s autocd
