@@ -13,18 +13,41 @@ export JEKYLL_SITE_PATH="$HOME/website"
 # Set up ls colors.
 eval "$(dircolors -b)"
 
-alias o='xdg-open'
+alias e="$EDITOR"
+alias o="xdg-open"
+alias view="vim -R"
 alias ls="ls --color=auto --human-readable --group-directories-first"
 alias grep="grep --color=auto"
 alias g="git"
-alias pyi='python3-bpython'
+alias bpython="python3-bpython"
+
+# Push to everything to all of a Git repository's remotes.
+function git-push-everything() {
+    for remote in $(git remote); do
+        echo "::: Pushing all branches to remote: $remote"
+        git push $remote --all
+        echo "::: Pushing all tags to remote: $remote"
+        git push $remote --tags
+        echo ""
+    done
+}
+
+# Download a list of YouTube URLs, either as given as arguments, or as stdin.
+function ytdl() {
+    local f=$(mktemp)
+    cat | sed "s/&.*$//" > $f
+    while read line; do
+        youtube-dl "$line"
+    done < $f
+    rm $f
+}
 
 # Interpreted C!
 function runc() {
-    local OUTPUT="/tmp/runc.out"
-    gcc -o $OUTPUT --std=gnu11 -Wall -g $1
-    [ -r $OUTPUT ] && $OUTPUT ${@:2}
-    rm -f $OUTPUT
+    local f=$(mktemp)
+    gcc --std=c11 -Wall -g $1 -o $f
+    [ -r $f ] && $f ${@:2}
+    rm -f $f
 }
 
 # Write throwaway bash code, and evaluate it.
@@ -38,7 +61,13 @@ function ebash() {
 
 # Convert RGB values to Hexadecimal.
 rgb2hex() {
-    printf '%x%x%x\n' $1 $2 $3
+    printf '%2x%2x%2x\n' $1 $2 $3
+}
+
+
+speedtest() {
+    ping -c 5 mirror.optus.net.au
+    wget "http://mirror.optus.net.au/pub/ubuntu/releases/14.10/ubuntu-14.10-desktop-amd64.iso" -O /dev/null
 }
 
 

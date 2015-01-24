@@ -13,6 +13,9 @@ set runtimepath+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'gmarik/Vundle.vim' 	" Vundle needs to manage itself.
+nnoremap <Leader>pi :PluginInstall<CR>
+nnoremap <Leader>pu :PluginUpdate<CR>
+nnoremap <Leader>pc :PluginClean<CR>
 
 Plugin 'tpope/vim-sensible'	" Defaults everyone can agree on.
 Plugin 'tpope/vim-repeat'	" Repeat plugin mappings too with `.`.
@@ -22,6 +25,7 @@ Plugin 'tpope/vim-speeddating'	" Increment/decrement dates/times with C-A/X.
 Plugin 'tpope/vim-characterize'	" Improve `ga` to provide more character info.
 Plugin 'tpope/vim-eunuch'	" Commands that wrap shell commands.
 Plugin 'tpope/vim-endwise'	" Wisely end control structures.
+Plugin 'tpope/vim-commentary'   " Comment stuff out
 
 " Manipulate multiple variants of a word.
 Plugin 'tpope/vim-abolish'
@@ -35,20 +39,24 @@ noremap <Leader>we :EraseBadWhitespace<CR>
 noremap <Leader>wt :ToggleBadWhitespace<CR>
 
 " Syntax checking.
-Bundle 'scrooloose/syntastic'
-let g:syntastic_check_on_open=1
+Plugin 'scrooloose/syntastic'
+let g:syntastic_mode_map = { "mode": "passive" }
 let g:syntastic_c_checkers = [ 'make' ]
 let g:syntastic_python_python_exec = 'python3'
 let g:syntastic_javascript_checkers = [ 'jshint' ]
 let g:syntastic_json_checkers = [ 'jsonlint' ]
+nnoremap <Leader>st :SyntasticToggleMode<CR>
+nnoremap <Leader>sc :SyntasticCheck<CR>
+nnoremap <Leader>si :SyntasticInfo<CR>
+nnoremap <Leader>sr :SyntasticReset<CR>
 
-" Fuzzy file and buffer finder.
-Bundle 'kien/ctrlp.vim'
-let g:ctrlp_user_command = 'ag --nocolor --files-with-matches -g "" %s'
+" A Git wrapper so awesome, it should be illegal.
+Plugin 'tpope/vim-fugitive'
 
 " Language plugins:
-Bundle 'leshill/vim-json'
-Bundle 'tpope/vim-markdown'
+Plugin 'file:///home/malcolm/projects/vim-arduino'
+Plugin 'leshill/vim-json'
+Plugin 'tpope/vim-markdown'
 let g:markdown_fenced_languages = [ 'javascript', 'json',
                                   \ 'ruby', 'c', 'sh', 'bash=sh', 'xml' ]
 
@@ -82,6 +90,12 @@ autocmd BufWinLeave ?* silent! mkview
 autocmd BufWinEnter ?* silent! loadview
 
 
+""" EDITING
+
+" flag 'g' is default for substitude commands like `:s/foo/bar/g`.
+set gdefault
+
+
 """ WHITESPACE
 
 " Smarter automatic indenting when starting a new line.
@@ -94,18 +108,21 @@ set expandtab
 " Number of spaces to use for each auto-indentation step.
 set shiftwidth=4
 
-" Backspacing over a <Tab> will replace it with 'shiftwidth' spaces.
-set softtabstop=-1
-
 
 """ NAVIGATION
+
+" :find over all files within the current working directory.
+set path=**
 
 " Enhanced command-line completion.
 set wildmenu
 
 " When pressing <Tab> on the wildmenu, autocomplete to the longest common
 " string, and if there's more than one match, list them all.
-set wildmode=longest,list
+set wildmode=list:full
+
+" File patterns to ignore when autoexpanding file names.
+set wildignore+=.git,.hg,.svn,*/deps/*,*.o,*.pyc,*.class,*/_site/*,*.dep.mk
 
 " When switching between buffers, jump to the first open window that contains
 " the specified buffer (if there is one).
@@ -120,6 +137,9 @@ set hidden
 " Use a colorscheme optimal for a dark background.
 set background=dark
 
+" Show what mode you're on.
+set showmode
+
 " Don't display whitespace characters (by default).
 set nolist
 
@@ -128,6 +148,19 @@ set wrap
 
 " Wrap lines at word boundaries.
 set linebreak
+
+
+""" SEARCHING
+
+" Ignore case for all-lowercase search patterns.
+set ignorecase
+set smartcase
+
+" Show matches while typing the search pattern.
+set incsearch
+
+" Highlight search pattern matches.
+set hlsearch
 
 
 
@@ -140,54 +173,81 @@ set linebreak
 autocmd BufNewFile,BufRead *.txt,README,INSTALL,NEWS,TODO,LICENSE
             \ if &filetype == "" | setlocal filetype=text | endif
 
-autocmd FileType text,markdown,html
-            \ setlocal textwidth=0
-
 autocmd BufEnter,BufRead *.h
             \ setlocal filetype=c
-
-autocmd FileType c,cpp,java
-            \ setlocal commentstring=//\ %s |
-            \ setlocal textwidth=77 |
-            \ setlocal shiftwidth=4
-
-autocmd FileType make
-            \ setlocal noexpandtab
-
-autocmd FileType gitcommit
-            \ setlocal textwidth=72
-
-autocmd FileType vim
-            \ setlocal shiftwidth=4
 
 autocmd BufNewFile,BufRead .jshintrc
             \ setlocal filetype=json
 
+autocmd BufNewFile,BufRead .vimlessrc
+            \ setlocal filetype=vim
+
+autocmd BufNewFile,BufRead *.csv
+            \ setlocal filetype=csv
+
+
+autocmd FileType text,markdown,html
+            \ setlocal textwidth=0
+
+autocmd FileType csv
+            \ setlocal list
+
+autocmd FileType c,cpp,java
+            \ setlocal commentstring=//\ %s |
+            \ setlocal textwidth=77
+
+autocmd FileType make
+            \ setlocal noexpandtab |
+            \ setlocal list
+
 
 
 """""""""""""""""""
-" MAPPINGS
+""" SYNTAX
+"""""""""""""""""""
+
+autocmd Syntax c
+            \ syntax keyword cType
+                \ schar uchar ushort uint ulong llong ullong ldouble
+                \ ord lssize_t |
+            \ syntax keyword cConstant LT EQ GT |
+            \ syntax keyword cConstant
+                \ EADDRNOTAVAIL EAFNOSUPPORT EHOSTUNREACH ENETUNREACH
+                \ ENOBUFS EOVERFLOW EPROTONOSUPPORT EPROTOTYPE
+
+autocmd Syntax python
+            \ syntax keyword pythonExceptions FileNotFoundError PermissionError
+
+
+
+"""""""""""""""""""
+""" MAPPINGS
 """""""""""""""""""
 
 " Save the file by pressing Enter in normal mode.
-noremap <CR> :write<CR>
+nnoremap <cr> :write<cr>
+
+" Quickly open files by exact paths - useful in smaller directories:
+nnoremap <leader>e :edit<space>
+
+" Easily find and open a file within `path`:
+nnoremap <leader>f :find<space>
+
+" Easily switch between buffers:
+nnoremap <leader>b :ls<cr>:buffer<space>
+
+" Easily jump between tags:
+nnoremap <leader>t :tjump<space>
+
+" Switch off search highlighting until the next search:
+nnoremap <leader>h :nohlsearch<cr>
 
 " Move cursor over visible lines, not real lines.
 noremap j gj
 noremap k gk
 
-" Switch to the last-edited buffer.
-nnoremap <Leader>e :e#<CR>
-
-
-
-"""""""""""""""""""
-" SYNTAX
-"""""""""""""""""""
-
-autocmd Syntax c
-            \ syntax keyword cType schar uchar ushort uint ulong llong
-                                 \ ullong ldouble ord lssize_t |
-            \ syntax keyword cConstant LT EQ GT
+" Swap the line movement keys:
+nnoremap gj j
+nnoremap gk k
 
 
