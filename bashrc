@@ -7,8 +7,18 @@
 export EDITOR="vim"
 export PS1="\[\e[1;34m\]\w\[\e[m\]$ "
 export LC_COLLATE="C"
-export PYTHONSTARTUP="$HOME/.pystartup"
-export JEKYLL_SITE_PATH="$HOME/website"
+export PYTHONSTARTUP="$HOME/.python/startup.py"
+export JEKYLL_SITE_PATH="$HOME/minglis.id.au"
+
+export PATH="$HOME/.local/bin:$PATH"
+
+export PW_FILE="$HOME/.pw"
+
+export CPPFLAGS="-DHAVE_ATTRIBUTE_FORMAT"
+
+export GOROOT="$HOME/.local/opt/go"
+export GOBIN="$HOME/.local/bin"
+export GOPATH="$HOME/go"
 
 # Set up ls colors.
 eval "$(dircolors -b)"
@@ -19,7 +29,6 @@ alias view="vim -R"
 alias ls="ls --color=auto --human-readable --group-directories-first"
 alias grep="grep --color=auto"
 alias g="git"
-alias bpython="python3-bpython"
 
 # Push to everything to all of a Git repository's remotes.
 function git-push-everything() {
@@ -42,14 +51,6 @@ function ytdl() {
     rm $f
 }
 
-# Interpreted C!
-function runc() {
-    local f=$(mktemp)
-    gcc --std=c11 -Wall -g $1 -o $f
-    [ -r $f ] && $f ${@:2}
-    rm -f $f
-}
-
 # Write throwaway bash code, and evaluate it.
 function ebash() {
     local SCRIPT=~/.e.bash
@@ -66,8 +67,8 @@ rgb2hex() {
 
 
 speedtest() {
-    ping -c 5 mirror.optus.net.au
-    wget "http://mirror.optus.net.au/pub/ubuntu/releases/14.10/ubuntu-14.10-desktop-amd64.iso" -O /dev/null
+    ping -c 5 mirror.aarnet.edu.au
+    wget "http://mirror.aarnet.edu.au/pub/ubuntu/releases/14.10/ubuntu-14.10-desktop-amd64.iso" -O /dev/null
 }
 
 
@@ -75,14 +76,30 @@ jl() {
     local link="$1"
     local title="${2:-$(title-from-url "$1")}"
     jekyll-link "$link" -t "$title"
-    cd ~/website
+    cd "$JEKYLL_SITE_PATH"
     git add .
     git commit -am "Add link \"$title\""
     git push
 }
 
 
-source ~/projects/shtag/shtag.bash
+pw() {
+    grep -i "^.*$@.*:" "$PW_FILE"
+}
+
+
+sshscan() {
+    for n in `seq $2 $3`; do
+        ssh -o ConnectTimeout=1 $1@192.168.1.$n
+    done
+}
+
+
+sshpoll() {
+    while ! ssh -o ConnectTimeout=3 $1; do
+        true
+    done
+}
 
 
 # Type the name of a directory to `cd` into it.

@@ -45,17 +45,36 @@ let g:syntastic_c_checkers = [ 'make' ]
 let g:syntastic_python_python_exec = 'python3'
 let g:syntastic_javascript_checkers = [ 'jshint' ]
 let g:syntastic_json_checkers = [ 'jsonlint' ]
-nnoremap <Leader>st :SyntasticToggleMode<CR>
-nnoremap <Leader>sc :SyntasticCheck<CR>
-nnoremap <Leader>si :SyntasticInfo<CR>
-nnoremap <Leader>sr :SyntasticReset<CR>
+nnoremap <leader>st :SyntasticToggleMode<cr>
+nnoremap <leader>sc :SyntasticCheck<cr>
+nnoremap <leader>si :SyntasticInfo<cr>
+nnoremap <leader>sr :SyntasticReset<cr>
+nnoremap <leader>sx :Errors<cr>
+
+" Fuzzy file, buffer, mru, and tag finder
+Plugin 'kien/ctrlp.vim'
+nnoremap <leader>f :CtrlP<cr>
+nnoremap <leader>b :CtrlPBuffer<cr>
+nnoremap <leader>t :CtrlPTag<cr>
+nnoremap <leader>m :CtrlPMRU<cr>
+nnoremap <leader>e :CtrlPQuickfix<cr>
+nnoremap <leader>d :CtrlPDir<cr>
+let g:ctrlp_user_command = {
+    \ 'types': {
+        \ 1: ['.git', 'cd %s && git ls-files'],
+        \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+        \ },
+    \ 'fallback': 'find %s -type f'
+    \ }
+
 
 " A Git wrapper so awesome, it should be illegal.
 Plugin 'tpope/vim-fugitive'
 
 " Language plugins:
-Plugin 'file:///home/malcolm/projects/vim-arduino'
+Plugin 'mcinglis/vim-arduino'
 Plugin 'leshill/vim-json'
+Plugin 'fatih/vim-go'
 Plugin 'tpope/vim-markdown'
 let g:markdown_fenced_languages = [ 'javascript', 'json',
                                   \ 'ruby', 'c', 'sh', 'bash=sh', 'xml' ]
@@ -94,6 +113,8 @@ autocmd BufWinEnter ?* silent! loadview
 
 " flag 'g' is default for substitude commands like `:s/foo/bar/g`.
 set gdefault
+
+let c_no_curly_error=1
 
 
 """ WHITESPACE
@@ -200,6 +221,9 @@ autocmd FileType make
             \ setlocal noexpandtab |
             \ setlocal list
 
+autocmd BufEnter,BufRead *.jinja
+            \ setlocal filetype=jinja
+
 
 
 """""""""""""""""""
@@ -213,7 +237,7 @@ autocmd Syntax c
             \ syntax keyword cConstant LT EQ GT |
             \ syntax keyword cConstant
                 \ EADDRNOTAVAIL EAFNOSUPPORT EHOSTUNREACH ENETUNREACH
-                \ ENOBUFS EOVERFLOW EPROTONOSUPPORT EPROTOTYPE
+                \ ENOBUFS ENODATA ENOMSG EOVERFLOW EPROTONOSUPPORT EPROTOTYPE
 
 autocmd Syntax python
             \ syntax keyword pythonExceptions FileNotFoundError PermissionError
@@ -227,18 +251,6 @@ autocmd Syntax python
 " Save the file by pressing Enter in normal mode.
 nnoremap <cr> :write<cr>
 
-" Quickly open files by exact paths - useful in smaller directories:
-nnoremap <leader>e :edit<space>
-
-" Easily find and open a file within `path`:
-nnoremap <leader>f :find<space>
-
-" Easily switch between buffers:
-nnoremap <leader>b :ls<cr>:buffer<space>
-
-" Easily jump between tags:
-nnoremap <leader>t :tjump<space>
-
 " Switch off search highlighting until the next search:
 nnoremap <leader>h :nohlsearch<cr>
 
@@ -249,5 +261,9 @@ noremap k gk
 " Swap the line movement keys:
 nnoremap gj j
 nnoremap gk k
+
+" Easily jump around the location list; used with Syntastic's :Errors
+nnoremap <leader>ln :lnext<cr>
+nnoremap <leader>lp :lprevious<cr>
 
 
