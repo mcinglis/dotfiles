@@ -73,11 +73,10 @@ Plugin 'tpope/vim-fugitive'
 
 " Language plugins:
 Plugin 'mcinglis/vim-arduino'
-Plugin 'leshill/vim-json'
-Plugin 'fatih/vim-go'
 Plugin 'tpope/vim-markdown'
-let g:markdown_fenced_languages = [ 'javascript', 'json',
-                                  \ 'ruby', 'c', 'sh', 'bash=sh', 'xml' ]
+Plugin 'mitsuhiko/vim-jinja'
+let g:markdown_fenced_languages = [ 'javascript', 'ruby', 'c', 'sh',
+                                  \ 'bash=sh', 'xml' ]
 
 call vundle#end()
 filetype plugin indent on
@@ -90,9 +89,6 @@ filetype plugin indent on
 
 " Enable syntax highlighting, but don't clobber existing ':highlight's.
 syntax enable
-
-" Create swap files in the first possible directory in this list.
-set directory=~/.vim/swaps,/tmp
 
 " Make a backup before overwriting a file, in the first possible directory.
 set backup

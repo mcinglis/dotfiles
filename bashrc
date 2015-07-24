@@ -2,11 +2,12 @@
 # Bash configuration; aliases, functions, and options.
 # Executed by non-login shells.
 
-[[ -r /etc/bashrc ]] && source /etc/bashrc
+if [ -r /etc/bashrc ]; then
+    source /etc/bashrc
+fi
 
 export EDITOR="vim"
-export PS1="\[\e[1;34m\]\w\[\e[m\]$ "
-export LC_COLLATE="C"
+export PS1="\[\e[1;34m\]\w\[\e[m\]\$ "
 export PYTHONSTARTUP="$HOME/.python/startup.py"
 export JEKYLL_SITE_PATH="$HOME/minglis.id.au"
 
@@ -16,16 +17,11 @@ export PW_FILE="$HOME/.pw"
 
 export CPPFLAGS="-DHAVE_ATTRIBUTE_FORMAT"
 
-export GOROOT="$HOME/.local/opt/go"
-export GOBIN="$HOME/.local/bin"
-export GOPATH="$HOME/go"
-
 # Set up ls colors.
 eval "$(dircolors -b)"
 
 alias e="$EDITOR"
 alias o="xdg-open"
-alias view="vim -R"
 alias ls="ls --color=auto --human-readable --group-directories-first"
 alias grep="grep --color=auto"
 alias g="git"
