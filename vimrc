@@ -12,19 +12,19 @@ filetype off
 set runtimepath+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-Plugin 'gmarik/Vundle.vim' 	" Vundle needs to manage itself.
+Plugin 'VundleVim/Vundle.vim'   " Vundle needs to manage itself.
 nnoremap <Leader>pi :PluginInstall<CR>
 nnoremap <Leader>pu :PluginUpdate<CR>
 nnoremap <Leader>pc :PluginClean<CR>
 
-Plugin 'tpope/vim-sensible'	" Defaults everyone can agree on.
-Plugin 'tpope/vim-repeat'	" Repeat plugin mappings too with `.`.
-Plugin 'tpope/vim-unimpaired'	" Handy complimentary mappings.
-Plugin 'tpope/vim-surround'	" Manipulate surrounding text.
-Plugin 'tpope/vim-speeddating'	" Increment/decrement dates/times with C-A/X.
-Plugin 'tpope/vim-characterize'	" Improve `ga` to provide more character info.
-Plugin 'tpope/vim-eunuch'	" Commands that wrap shell commands.
-Plugin 'tpope/vim-endwise'	" Wisely end control structures.
+Plugin 'tpope/vim-sensible'     " Defaults everyone can agree on.
+Plugin 'tpope/vim-repeat'       " Repeat plugin mappings too with `.`.
+Plugin 'tpope/vim-unimpaired'   " Handy complimentary mappings.
+Plugin 'tpope/vim-surround'     " Manipulate surrounding text.
+Plugin 'tpope/vim-speeddating'  " Increment/decrement dates/times with C-A/X.
+Plugin 'tpope/vim-characterize' " Improve `ga` to provide more character info.
+Plugin 'tpope/vim-eunuch'       " Commands that wrap shell commands.
+Plugin 'tpope/vim-endwise'      " Wisely end control structures.
 Plugin 'tpope/vim-commentary'   " Comment stuff out
 
 " Manipulate multiple variants of a word.
@@ -67,16 +67,29 @@ let g:ctrlp_user_command = {
     \ 'fallback': 'find %s -type f'
     \ }
 
+function CtrlPUseFallbackCommand()
+    " Stop CtrlP looking up for a .git directory:
+    let g:ctrlp_working_path_mode = ''
+    " Use the fallback file-finding command:
+    let l:fallback = g:ctrlp_user_command['fallback']
+    unlet g:ctrlp_user_command
+    let g:ctrlp_user_command = l:fallback
+endfunction
+
 
 " A Git wrapper so awesome, it should be illegal.
 Plugin 'tpope/vim-fugitive'
 
 " Language plugins:
+Plugin 'hdima/python-syntax'
+let g:python_highlight_all = 1
+
 Plugin 'mcinglis/vim-arduino'
-Plugin 'tpope/vim-markdown'
 Plugin 'mitsuhiko/vim-jinja'
+
+Plugin 'tpope/vim-markdown'
 let g:markdown_fenced_languages = [ 'javascript', 'ruby', 'c', 'sh',
-                                  \ 'bash=sh', 'xml' ]
+                                  \ 'bash=sh', 'xml', 'python' ]
 
 call vundle#end()
 filetype plugin indent on
@@ -139,7 +152,7 @@ set wildmenu
 set wildmode=list:full
 
 " File patterns to ignore when autoexpanding file names.
-set wildignore+=.git,.hg,.svn,*/deps/*,*.o,*.pyc,*.class,*/_site/*,*.dep.mk
+set wildignore+=.git,.hg,.svn,*/deps/*,*.o,*.pyc,*.class,*/_site/*,*.dep.mk,*.swp
 
 " When switching between buffers, jump to the first open window that contains
 " the specified buffer (if there is one).
@@ -202,6 +215,18 @@ autocmd BufNewFile,BufRead .vimlessrc
 autocmd BufNewFile,BufRead *.csv
             \ setlocal filetype=csv
 
+autocmd BufNewFile,BufRead Gemfile,Guardfile
+            \ setlocal filetype=ruby
+
+
+autocmd FileType ruby
+            \ setlocal shiftwidth=2
+
+autocmd FileType html
+            \ setlocal shiftwidth=2
+
+autocmd FileType eruby
+            \ setlocal shiftwidth=2
 
 autocmd FileType text,markdown,html
             \ setlocal textwidth=0
@@ -233,7 +258,8 @@ autocmd Syntax c
             \ syntax keyword cConstant LT EQ GT |
             \ syntax keyword cConstant
                 \ EADDRNOTAVAIL EAFNOSUPPORT EHOSTUNREACH ENETUNREACH
-                \ ENOBUFS ENODATA ENOMSG EOVERFLOW EPROTONOSUPPORT EPROTOTYPE
+                \ ENOBUFS ENODATA ENOMSG EOVERFLOW EPROTO
+                \ EPROTONOSUPPORT EPROTOTYPE EWOULDBLOCK
 
 autocmd Syntax python
             \ syntax keyword pythonExceptions FileNotFoundError PermissionError

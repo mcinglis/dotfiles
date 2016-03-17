@@ -11,8 +11,6 @@ export PS1="\[\e[1;34m\]\w\[\e[m\]\$ "
 export PYTHONSTARTUP="$HOME/.python/startup.py"
 export JEKYLL_SITE_PATH="$HOME/minglis.id.au"
 
-export PATH="$HOME/.local/bin:$PATH"
-
 export PW_FILE="$HOME/.pw"
 
 export CPPFLAGS="-DHAVE_ATTRIBUTE_FORMAT"
@@ -25,6 +23,7 @@ alias o="xdg-open"
 alias ls="ls --color=auto --human-readable --group-directories-first"
 alias grep="grep --color=auto"
 alias g="git"
+alias gs="git status"
 
 # Push to everything to all of a Git repository's remotes.
 function git-push-everything() {
@@ -54,6 +53,11 @@ function ebash() {
     cat $SCRIPT
     echo --------
     source $SCRIPT
+}
+
+
+function zlibcat() {
+    cat "$@" | openssl zlib -d
 }
 
 # Convert RGB values to Hexadecimal.
@@ -93,8 +97,35 @@ sshscan() {
 
 sshpoll() {
     while ! ssh -o ConnectTimeout=3 $1; do
-        true
+        sleep 1
     done
+}
+
+
+brain_find() {
+    sudo nmap -p22 10.3.1.* | grep -B 4 'Unknown' | grep -B 3 'open'
+}
+
+
+pyvenv_create() {
+    local name="$1"
+    if [[ "$name" == '' ]]; then
+        echo "Usage: $FUNCNAME <name>" 2>&1
+        return 1
+    fi
+    local d="$HOME/.python/virtualenvs"
+    mkdir -p "$d"
+    pyvenv-3.5 "$d/$name"
+}
+
+
+pyvenv_activate() {
+    local name="$1"
+    if [[ "$name" == '' ]]; then
+        echo "Usage: $FUNCNAME <name>" 2>&1
+        return 1
+    fi
+    source "$HOME/.python/virtualenvs/$name/bin/activate"
 }
 
 

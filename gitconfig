@@ -10,7 +10,7 @@
 
 [alias]
 	l = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-	d = diff --word-diff
+	d = diff
 	s = status
 	c = commit -am
 	p = push
@@ -21,5 +21,8 @@
 	default = simple
 
 [diff]
+	algorithm = patience
 	tool = vimdiff
 
+[core]
+	excludesfile = /home/malcolm/.gitignore

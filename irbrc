@@ -1,4 +1,5 @@
-require "irbtools"
-require "bond"
 
-Bond.start
+require 'irb/completion'
+
+IRB.conf[:PROMPT_MODE] = :SIMPLE
+

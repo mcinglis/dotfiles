@@ -1,5 +1,2 @@
-vim/backups
-vim/bundle
-vim/swaps
-vim/undos
-vim/views
+python
+!python/startup.py
