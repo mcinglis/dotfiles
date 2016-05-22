@@ -91,6 +91,10 @@ Plugin 'tpope/vim-markdown'
 let g:markdown_fenced_languages = [ 'javascript', 'ruby', 'c', 'sh',
                                   \ 'bash=sh', 'xml', 'python' ]
 
+Plugin 'rust-lang/rust.vim'
+
+Plugin 'cespare/vim-toml'
+
 call vundle#end()
 filetype plugin indent on
 
@@ -218,6 +222,11 @@ autocmd BufNewFile,BufRead *.csv
 autocmd BufNewFile,BufRead Gemfile,Guardfile
             \ setlocal filetype=ruby
 
+autocmd FileType rust
+            \ nnoremap <buffer> <leader>r <esc>:update<bar>:execute '!cargo run'<cr>
+
+autocmd FileType python
+            \ nnoremap <buffer> <leader>r <esc>:update<bar>:execute '!python3 '.shellescape(@%, 1)<cr>
 
 autocmd FileType ruby
             \ setlocal shiftwidth=2
@@ -262,7 +271,8 @@ autocmd Syntax c
                 \ EPROTONOSUPPORT EPROTOTYPE EWOULDBLOCK
 
 autocmd Syntax python
-            \ syntax keyword pythonExceptions FileNotFoundError PermissionError
+            \ syntax keyword pythonExClass FileNotFoundError PermissionError |
+            \ syntax keyword pythonBuiltinObj self
 
 
 
@@ -287,5 +297,8 @@ nnoremap gk k
 " Easily jump around the location list; used with Syntastic's :Errors
 nnoremap <leader>ln :lnext<cr>
 nnoremap <leader>lp :lprevious<cr>
+
+" Shortcut to running an external command:
+nnoremap <leader>x :!
 
 

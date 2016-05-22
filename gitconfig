@@ -26,3 +26,6 @@
 
 [core]
 	excludesfile = /home/malcolm/.gitignore
+[gpg]
+	program = gpg2
+
