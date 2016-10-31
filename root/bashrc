@@ -1,0 +1,44 @@
+# /root/.bashrc
+# Bash configuration; aliases, functions, and options.
+# Executed by root non-login shells.
+
+# Set LS_COLORS to show appropriate colors for different file types.
+eval "$(dircolors --sh)"
+
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+alias ls='ls --color=auto --human-readable --group-directories-first --quoting-style=literal'
+alias grep='grep --color=auto'
+
+# Correct minor errors when spelling directories for `cd`.
+shopt -s cdspell
+
+# Update $LINES and $COLUMNS after every command.
+shopt -s checkwinsize
+
+# Save multiple-line commands in the same history entry.
+shopt -s cmdhist
+
+# Correct minor errors when spelling directories.
+shopt -s dirspell
+
+# Enable operators like ?, *, + to work on pattern lists.
+shopt -s extglob
+
+# Allow use of ** for recursive pathname expansion.
+shopt -s globstar
+
+# Append to history file on exit rather than overwriting it.
+shopt -s histappend
+
+# Use case-insensitive pathname expansion.
+shopt -s nocaseglob
+
+if [ -r /etc/bashrc ]; then
+    source /etc/bashrc
+fi
+
+# Fedora's /etc/bashrc overwrites PS1, so:
+export PS1='\[\e[1;34m\]\w\[\e[m\]\$ '
+
