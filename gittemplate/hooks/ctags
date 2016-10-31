@@ -6,7 +6,7 @@ set -e
 
 trap "rm -f .git/tags.$$" EXIT
 
-ctags --tag-relative -Rf.git/tags.$$ --exclude=.git --languages=-javascript,sql
+ctags --tag-relative -Rf.git/tags.$$ --exclude=.git
 
 mv .git/tags.$$ .git/tags
 

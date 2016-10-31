@@ -1,31 +1,33 @@
 [user]
-	name = Malcolm Inglis
-	email = me@minglis.id.au
+    name = Malcolm Inglis
+    email = me@minglis.id.au
 
 [init]
-	templatedir = ~/.git_template
+    templatedir = ~/.gittemplate
 
 [color]
-	ui = true
+    ui = true
 
 [alias]
-	l = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-	d = diff
-	s = status
-	c = commit -am
-	p = push
-	ctags = !.git/hooks/ctags
-	authors = !git log --format='%aN <%C(blue)%aE%Creset>' | sort -u
+    l = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+    d = diff
+    s = status
+    a = add
+    aa = add --all
+    c = commit
+    cam = commit --all --message
+    ctags = !.git/hooks/ctags
+    authors = !git log --format='%aN <%C(blue)%aE%Creset>' | sort -u
 
 [push]
-	default = simple
+    default = simple
 
 [diff]
-	algorithm = patience
-	tool = vimdiff
+    tool = vimdiff
 
 [core]
-	excludesfile = /home/malcolm/.gitignore
+    excludesfile = /home/malcolm/.gitignore
+
 [gpg]
-	program = gpg2
+    program = gpg2
 
