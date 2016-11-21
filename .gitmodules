@@ -1,0 +1,42 @@
+[submodule "vim/pack/malcolm/start/vim-unimpaired"]
+	path = vim/pack/malcolm/start/vim-unimpaired
+	url = https://github.com/tpope/vim-unimpaired.git
+[submodule "vim/pack/malcolm/start/vim-airline"]
+	path = vim/pack/malcolm/start/vim-airline
+	url = https://github.com/vim-airline/vim-airline.git
+[submodule "vim/pack/malcolm/start/vim-airline-themes"]
+	path = vim/pack/malcolm/start/vim-airline-themes
+	url = https://github.com/vim-airline/vim-airline-themes.git
+[submodule "vim/pack/malcolm/start/syntastic"]
+	path = vim/pack/malcolm/start/syntastic
+	url = https://github.com/vim-syntastic/syntastic
+[submodule "vim/pack/malcolm/start/vim-fugitive"]
+	path = vim/pack/malcolm/start/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive
+[submodule "vim/pack/malcolm/start/vim-surround"]
+	path = vim/pack/malcolm/start/vim-surround
+	url = https://github.com/tpope/vim-surround.git
+[submodule "vim/pack/malcolm/start/ctrlp.vim"]
+	path = vim/pack/malcolm/start/ctrlp.vim
+	url = https://github.com/ctrlpvim/ctrlp.vim
+[submodule "vim/pack/malcolm/start/vim-vinegar"]
+	path = vim/pack/malcolm/start/vim-vinegar
+	url = https://github.com/tpope/vim-vinegar.git
+[submodule "vim/pack/malcolm/start/vim-commentary"]
+	path = vim/pack/malcolm/start/vim-commentary
+	url = https://github.com/tpope/vim-commentary.git
+[submodule "vim/pack/malcolm/start/vim-repeat"]
+	path = vim/pack/malcolm/start/vim-repeat
+	url = https://github.com/tpope/vim-repeat.git
+[submodule "vim/pack/malcolm/start/vim-abolish"]
+	path = vim/pack/malcolm/start/vim-abolish
+	url = https://github.com/tpope/vim-abolish.git
+[submodule "vim/pack/malcolm/start/vim-jdaddy"]
+	path = vim/pack/malcolm/start/vim-jdaddy
+	url = https://github.com/tpope/vim-jdaddy.git
+[submodule "vim/pack/malcolm/start/vim-characterize"]
+	path = vim/pack/malcolm/start/vim-characterize
+	url = https://github.com/tpope/vim-characterize.git
+[submodule "vim/pack/malcolm/start/vim-eunuch"]
+	path = vim/pack/malcolm/start/vim-eunuch
+	url = https://github.com/tpope/vim-eunuch.git

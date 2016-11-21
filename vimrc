@@ -1,304 +1,253 @@
 
+" Be Vimproved!
 set nocompatible
-let mapleader=' '
 
-
-
-"""""""""""""""""""""""""
-""" PLUGINS
-"""""""""""""""""""""""""
-
-filetype off
-set runtimepath+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-Plugin 'VundleVim/Vundle.vim'   " Vundle needs to manage itself.
-nnoremap <Leader>pi :PluginInstall<CR>
-nnoremap <Leader>pu :PluginUpdate<CR>
-nnoremap <Leader>pc :PluginClean<CR>
-
-Plugin 'tpope/vim-sensible'     " Defaults everyone can agree on.
-Plugin 'tpope/vim-repeat'       " Repeat plugin mappings too with `.`.
-Plugin 'tpope/vim-unimpaired'   " Handy complimentary mappings.
-Plugin 'tpope/vim-surround'     " Manipulate surrounding text.
-Plugin 'tpope/vim-speeddating'  " Increment/decrement dates/times with C-A/X.
-Plugin 'tpope/vim-characterize' " Improve `ga` to provide more character info.
-Plugin 'tpope/vim-eunuch'       " Commands that wrap shell commands.
-Plugin 'tpope/vim-endwise'      " Wisely end control structures.
-Plugin 'tpope/vim-commentary'   " Comment stuff out
-
-" Manipulate multiple variants of a word.
-Plugin 'tpope/vim-abolish'
-" :Abolish {despa,sepe}rat{e,es,ed,ing,ely,ion,ions,or} {despe,sepa}rat{}
-" :%Subvert/facilit{y,ies}/building{,s}/g
-" crs (snake case), crm (mixed case), crc (camel case), cru (upper case)
-
-" Highlight and remove trailing whitespace.
-Plugin 'bitc/vim-bad-whitespace'
-noremap <Leader>we :EraseBadWhitespace<CR>
-noremap <Leader>wt :ToggleBadWhitespace<CR>
-
-" Syntax checking.
-Plugin 'scrooloose/syntastic'
-let g:syntastic_mode_map = { "mode": "passive" }
-let g:syntastic_c_checkers = [ 'make' ]
-let g:syntastic_python_python_exec = 'python3'
-let g:syntastic_javascript_checkers = [ 'jshint' ]
-let g:syntastic_json_checkers = [ 'jsonlint' ]
-nnoremap <leader>st :SyntasticToggleMode<cr>
-nnoremap <leader>sc :SyntasticCheck<cr>
-nnoremap <leader>si :SyntasticInfo<cr>
-nnoremap <leader>sr :SyntasticReset<cr>
-nnoremap <leader>sx :Errors<cr>
-
-" Fuzzy file, buffer, mru, and tag finder
-Plugin 'kien/ctrlp.vim'
-nnoremap <leader>f :CtrlP<cr>
-nnoremap <leader>b :CtrlPBuffer<cr>
-nnoremap <leader>t :CtrlPTag<cr>
-nnoremap <leader>m :CtrlPMRU<cr>
-nnoremap <leader>e :CtrlPQuickfix<cr>
-nnoremap <leader>d :CtrlPDir<cr>
-let g:ctrlp_user_command = {
-    \ 'types': {
-        \ 1: ['.git', 'cd %s && git ls-files'],
-        \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-        \ },
-    \ 'fallback': 'find %s -type f'
-    \ }
-
-function CtrlPUseFallbackCommand()
-    " Stop CtrlP looking up for a .git directory:
-    let g:ctrlp_working_path_mode = ''
-    " Use the fallback file-finding command:
-    let l:fallback = g:ctrlp_user_command['fallback']
-    unlet g:ctrlp_user_command
-    let g:ctrlp_user_command = l:fallback
-endfunction
-
-
-" A Git wrapper so awesome, it should be illegal.
-Plugin 'tpope/vim-fugitive'
-
-" Language plugins:
-Plugin 'hdima/python-syntax'
-let g:python_highlight_all = 1
-
-Plugin 'mcinglis/vim-arduino'
-Plugin 'mitsuhiko/vim-jinja'
-
-Plugin 'tpope/vim-markdown'
-let g:markdown_fenced_languages = [ 'javascript', 'ruby', 'c', 'sh',
-                                  \ 'bash=sh', 'xml', 'python' ]
-
-Plugin 'rust-lang/rust.vim'
-
-Plugin 'cespare/vim-toml'
-
-call vundle#end()
+" Enable filetype detection, plugins, and indentation:
 filetype plugin indent on
 
-
-
-"""""""""""""""""""""""""
-""" OPTIONS
-"""""""""""""""""""""""""
-
-" Enable syntax highlighting, but don't clobber existing ':highlight's.
+" Enable syntax highlighting, but don't clobber existing `:highlight`s:
 syntax enable
 
-" Make a backup before overwriting a file, in the first possible directory.
+" Have Vim operate with UTF8, per docs' recommendations:
+set encoding=utf-8
+
+" How many `:` commands and search patterns to remember:
+set history=1000
+
+" Maximum number of tab pages that can be opened at once:
+set tabpagemax=50
+
+" Make a backup before overwriting a file:
 set backup
-set backupdir=~/.vim/backups,/tmp
+set backupdir=~/.local/share/vim/backups
 
-" Save undo histories for files.
+" Save undo histories for files:
 set undofile
-set undodir=~/.vim/undos,/tmp
+set undodir=~/.local/share/vim/undos
 
-" Remember the cursor position and folds in windows (but not options).
-set viewoptions=cursor,folds
-set viewdir=~/.vim/views
-autocmd BufWinLeave ?* silent! mkview
-autocmd BufWinEnter ?* silent! loadview
+
+""" DISPLAY
+
+color Tomorrow-Night
+
+" Use a colorscheme optimal for a dark background:
+set background=dark
+
+" Show relative line numbers in the left-hand column:
+set number
+set relativenumber
+
+" Show the line and colum number of the cursor:
+set ruler
+
+" Always show the status line:
+set laststatus=2
+
+" Show what mode you're in:
+set showmode
+
+" Keep cursor away from window margins:
+set scrolloff=1
+set sidescrolloff=5
+
+" Show as much as possible of the last line of a window:
+set display+=lastline
+
+" Display whitespace characters (by default):
+set list
+
+" But, when toggled, display whitespace characters as:
+set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+
+" Wrap lines longer than the window width, at word boundaries:
+set wrap
+set linebreak
 
 
 """ EDITING
 
-" flag 'g' is default for substitude commands like `:s/foo/bar/g`.
+" Allow removal of all textual elements in Insert mode:
+set backspace=indent,eol,start
+
+" Do not scan included files for keyword completion
+set complete-=i
+
+" Disable <C-A> and <C-X> on octal-looking numbers:
+set nrformats-=octal
+
+" Delete comment character when joining commented lines:
+set formatoptions+=j
+
+" Time out on partial inputs of mappings and keycodes:
+set timeout timeoutlen=500
+set ttimeout ttimeoutlen=0
+
+" Make global flag 'g' default for substitute commands like `:s/foo/bar/g`:
 set gdefault
 
-let c_no_curly_error=1
+" Update buffers if their file changes and they haven't been edited yet:
+set autoread
 
 
 """ WHITESPACE
 
-" Smarter automatic indenting when starting a new line.
+" Smarter automatic indenting when starting a new line:
 set autoindent
 set smartindent
 
-" Always insert tabs (and indents) as spaces.
+" Always insert tabs (and indents) as spaces:
 set expandtab
 
-" Number of spaces to use for each auto-indentation step.
+" Insert and delete tabs (or indents) intelligently:
+set smarttab
+
+" Number of spaces to use for each indentation step:
 set shiftwidth=4
 
 
 """ NAVIGATION
 
-" :find over all files within the current working directory.
+" `:find` over all files within the current working directory
 set path=**
 
-" Enhanced command-line completion.
+" Enhanced command-line completion:
 set wildmenu
 
 " When pressing <Tab> on the wildmenu, autocomplete to the longest common
-" string, and if there's more than one match, list them all.
-set wildmode=list:full
+" string, and if there's more than one match, list them all:
+set wildmode=longest:full
 
-" File patterns to ignore when autoexpanding file names.
-set wildignore+=.git,.hg,.svn,*/deps/*,*.o,*.pyc,*.class,*/_site/*,*.dep.mk,*.swp
+" File patterns to ignore when autoexpanding file names:
+set wildignore+=.git/,.hg/,.svn/
+set wildignore+=__pycache__/,*.pyc,.coverage
+set wildignore+=deps/,*.o,*.class,_site/,*.dep.mk,*.swp
+
+" Ignore case when completing file paths in the wildmenu:
+set wildignorecase
 
 " When switching between buffers, jump to the first open window that contains
-" the specified buffer (if there is one).
+" the specified buffer (if there is one):
 set switchbuf=useopen
 
-" Allow buffers to be hidden without saving them.
+" Allow buffers to be hidden without saving them:
 set hidden
-
-
-""" DISPLAY
-
-" Use a colorscheme optimal for a dark background.
-set background=dark
-
-" Show what mode you're on.
-set showmode
-
-" Don't display whitespace characters (by default).
-set nolist
-
-" Wrap lines longer than the window width.
-set wrap
-
-" Wrap lines at word boundaries.
-set linebreak
 
 
 """ SEARCHING
 
-" Ignore case for all-lowercase search patterns.
+" Ignore case for all-lowercase search patterns:
 set ignorecase
 set smartcase
 
-" Show matches while typing the search pattern.
+" Show matches while typing the search pattern:
 set incsearch
 
-" Highlight search pattern matches.
+" Highlight search pattern matches:
 set hlsearch
 
+" Use Ag to search with `:grep`:
+set grepprg=ag\ --vimgrep\ --follow
+set grepformat=%f:%l:%c:%m
 
 
-"""""""""""""""""""""""""
-""" AUTOCOMMANDS
-"""""""""""""""""""""""""
+""" FILETYPE CUSTOMIZATION
 
-" Give files with .txt extensions their own filetypes, but only if they
-" haven't already been given a filetype.
-autocmd BufNewFile,BufRead *.txt,README,INSTALL,NEWS,TODO,LICENSE
-            \ if &filetype == "" | setlocal filetype=text | endif
-
-autocmd BufEnter,BufRead *.h
-            \ setlocal filetype=c
-
-autocmd BufNewFile,BufRead .jshintrc
-            \ setlocal filetype=json
-
-autocmd BufNewFile,BufRead .vimlessrc
-            \ setlocal filetype=vim
-
-autocmd BufNewFile,BufRead *.csv
-            \ setlocal filetype=csv
-
-autocmd BufNewFile,BufRead Gemfile,Guardfile
-            \ setlocal filetype=ruby
-
-autocmd FileType rust
-            \ nnoremap <buffer> <leader>r <esc>:update<bar>:execute '!cargo run'<cr>
-
-autocmd FileType python
-            \ nnoremap <buffer> <leader>r <esc>:update<bar>:execute '!python3 '.shellescape(@%, 1)<cr>
+autocmd FileType vim
+            \ setlocal keywordprg=:help
 
 autocmd FileType ruby
             \ setlocal shiftwidth=2
 
+autocmd BufNewFile,BufRead Gemfile,Guardfile
+            \ setlocal filetype=ruby
+
 autocmd FileType html
             \ setlocal shiftwidth=2
-
-autocmd FileType eruby
-            \ setlocal shiftwidth=2
-
-autocmd FileType text,markdown,html
-            \ setlocal textwidth=0
-
-autocmd FileType csv
-            \ setlocal list
-
-autocmd FileType c,cpp,java
-            \ setlocal commentstring=//\ %s |
-            \ setlocal textwidth=77
 
 autocmd FileType make
             \ setlocal noexpandtab |
             \ setlocal list
 
-autocmd BufEnter,BufRead *.jinja
-            \ setlocal filetype=jinja
+let g:markdown_fenced_languages = [ 'sh', 'bash=sh', 'c', 'html',
+                                  \ 'javascript', 'json', 'python', 'ruby',
+                                  \ 'xml' ]
 
 
-
-"""""""""""""""""""
-""" SYNTAX
-"""""""""""""""""""
-
-autocmd Syntax c
-            \ syntax keyword cType
-                \ schar uchar ushort uint ulong llong ullong ldouble
-                \ ord lssize_t |
-            \ syntax keyword cConstant LT EQ GT |
-            \ syntax keyword cConstant
-                \ EADDRNOTAVAIL EAFNOSUPPORT EHOSTUNREACH ENETUNREACH
-                \ ENOBUFS ENODATA ENOMSG EOVERFLOW EPROTO
-                \ EPROTONOSUPPORT EPROTOTYPE EWOULDBLOCK
-
-autocmd Syntax python
-            \ syntax keyword pythonExClass FileNotFoundError PermissionError |
-            \ syntax keyword pythonBuiltinObj self
-
-
-
-"""""""""""""""""""
 """ MAPPINGS
-"""""""""""""""""""
 
-" Save the file by pressing Enter in normal mode.
-nnoremap <cr> :write<cr>
+let mapleader=' '
 
-" Switch off search highlighting until the next search:
-nnoremap <leader>h :nohlsearch<cr>
+" Fast way to save the current buffer:
+nnoremap S :write<CR>
 
-" Move cursor over visible lines, not real lines.
-noremap j gj
-noremap k gk
+" Quickly open files by exact paths - useful in smaller directories:
+nnoremap <Leader>e :edit<Space>
 
-" Swap the line movement keys:
-nnoremap gj j
-nnoremap gk k
+" Easily open up the quickfix window (grepping, syntastic, etc):
+nnoremap <Leader>c :copen<CR>
 
-" Easily jump around the location list; used with Syntastic's :Errors
-nnoremap <leader>ln :lnext<cr>
-nnoremap <leader>lp :lprevious<cr>
+" Run searches on the cwd recursively:
+nnoremap <Leader>g :grep<Space>
 
 " Shortcut to running an external command:
-nnoremap <leader>x :!
+nnoremap <Leader>x :!
 
+" Switch off search highlighting until the next search:
+nnoremap <C-L> :nohlsearch<CR>
+
+
+""" MACROS
+
+" Improved `%` matching:
+runtime! macros/matchit.vim
+
+
+""" PLUGINS
+
+""" Netrw: directory browser
+
+" Hide the banner in directory listings:
+let g:netrw_banner=0
+
+" Make the default directory listing tree style:
+let g:netrw_liststyle=3
+
+" Open preview windows by verticallly splitting:
+let g:netrw_preview=1
+
+" Open new windows from Netrw at this % of the current window:
+let g:netrw_winsize=80
+
+" Settings applied to Netrw buffers:
+let g:netrw_bufsettings='nu rnu noma nomod nobl nowrap ro'
+
+" Store netrw bookmarks outside of .vim:
+let g:netrw_home='~/.local/share/vim/'
+
+" Initialize with dotfiles hidden (thanks vim-vinegar; `gh` to unhide):
+let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+'
+
+
+"""" Airline: status bar for Vim
+
+" Disable whitespace checking, and the notification:
+let g:airline#extensions#whitespace#enabled=0
+
+
+"""" Syntastic: live syntax checking
+let g:syntastic_always_populate_loc_list=1
+let g:syntastic_auto_loc_list=2
+let g:syntastic_check_on_open=1
+let g:syntastic_check_on_wq=0
+
+
+""" CtrlP: fuzzy file (and other things) finder
+let g:ctrlp_map='<Leader>f'
+let g:ctrlp_match_current_file=1
+let g:ctrlp_bufname_mod=':.'
+let g:ctrlp_bufpath_mod=''
+
+nnoremap <Leader>b :CtrlPBuffer<CR>
+nnoremap <Leader>t :CtrlPTag<CR>
+nnoremap <Leader>m :CtrlPMRU<CR>
 
