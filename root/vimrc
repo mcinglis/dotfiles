@@ -28,7 +28,8 @@ set undodir=~/.local/share/vim/undos
 
 """ DISPLAY
 
-colorscheme crasnox
+set background=dark
+colorscheme Tomorrow-Night
 
 " Show relative line numbers in the left-hand column:
 set number
@@ -112,12 +113,12 @@ set wildmenu
 
 " When pressing <Tab> on the wildmenu, autocomplete to the longest common
 " string, and if there's more than one match, list them all:
-set wildmode=list:full
+set wildmode=longest:full
 
 " File patterns to ignore when autoexpanding file names:
 set wildignore+=.git/,.hg/,.svn/
 set wildignore+=__pycache__/,*.pyc,.coverage
-set wildignore+=target/,deps/,*.o,*.class,_site/,*.dep.mk,*.swp
+set wildignore+=deps/,*.o,*.class,_site/,*.dep.mk,*.swp
 
 " Ignore case when completing file paths in the wildmenu:
 set wildignorecase
@@ -149,38 +150,21 @@ set grepformat=%f:%l:%c:%m
 
 """ FILETYPE CUSTOMIZATION
 
-autocmd FileType c
-            \ setlocal commentstring=//\ %s
-autocmd BufEnter,BufRead *.h
-            \ setlocal filetype=c
-autocmd Syntax c
-            \ syntax keyword cType
-                \ schar uchar ushort uint ulong llong ullong ldouble
-                \ ord lssize_t |
-            \ syntax keyword cConstant LT EQ GT |
-            \ syntax keyword cConstant
-                \ EADDRNOTAVAIL EAFNOSUPPORT EHOSTUNREACH ENETUNREACH
-                \ ENOBUFS ENODATA ENOMSG EOVERFLOW EPROTO
-                \ EPROTONOSUPPORT EPROTOTYPE EWOULDBLOCK
-
-autocmd FileType make
-            \ setlocal noexpandtab |
-            \ setlocal list
-
 autocmd FileType vim
             \ setlocal keywordprg=:help
 
-let g:python_highlight_all = 1
-autocmd Syntax python
-            \ syntax keyword pythonBuiltinObj self cls
-
 autocmd FileType ruby
             \ setlocal shiftwidth=2
+
 autocmd BufNewFile,BufRead Gemfile,Guardfile
             \ setlocal filetype=ruby
 
 autocmd FileType html
             \ setlocal shiftwidth=2
+
+autocmd FileType make
+            \ setlocal noexpandtab |
+            \ setlocal list
 
 let g:markdown_fenced_languages = [ 'sh', 'bash=sh', 'c', 'html',
                                   \ 'javascript', 'json', 'python', 'ruby',
@@ -232,7 +216,7 @@ let g:netrw_preview=1
 " Open new windows from Netrw at this % of the current window:
 let g:netrw_winsize=80
 
-" Settings applied to Netrw buffers (adding `relativenumber`):
+" Settings applied to Netrw buffers:
 let g:netrw_bufsettings='nu rnu noma nomod nobl nowrap ro'
 
 " Store netrw bookmarks outside of .vim:
@@ -240,40 +224,4 @@ let g:netrw_home='~/.local/share/vim/'
 
 " Initialize with dotfiles hidden (thanks vim-vinegar; `gh` to unhide):
 let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+'
-
-
-"""" Airline: status bar for Vim
-
-" Disable whitespace checking, and the notification:
-let g:airline#extensions#whitespace#enabled=0
-
-let g:airline_theme='tomorrow'
-
-
-"""" Syntastic: live syntax checking
-let g:syntastic_always_populate_loc_list=1
-let g:syntastic_auto_loc_list=2
-let g:syntastic_check_on_open=1
-let g:syntastic_check_on_wq=0
-
-let g:syntastic_c_checkers = ["make"]
-
-
-""" CtrlP: fuzzy file (and other things) finder
-let g:ctrlp_map='<Leader>f'
-let g:ctrlp_match_current_file=1
-let g:ctrlp_bufname_mod=':.'
-let g:ctrlp_bufpath_mod=''
-
-nnoremap <Leader>b :CtrlPBuffer<CR>
-nnoremap <Leader>t :CtrlPTag<CR>
-nnoremap <Leader>m :CtrlPMRU<CR>
-
-
-""" Tagbar: a window for showing the current file's tags
-let g:tagbar_sort = 0
-let g:tagbar_compact = 1
-let g:tagbar_show_visibility = 0
-let g:tagbar_autoshowtag = 1
-nnoremap <F8> :TagbarToggle<CR>
 
