@@ -1,10 +1,10 @@
 # /root/.profile
 # Executed by root login shells.
 
-export EDITOR='vim'
+export EDITOR='vimx'
 
 export PS1='\[\e[1;31m\]\w\[\e[m\]\$ '
 
-# Order special characters before uppercase before lowercase.
-export LC_COLLATE='C'
+export HISTSIZE=100000
+export HISTCONTROL=ignoredups
 

@@ -11,11 +11,15 @@
 [alias]
     l = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
     d = diff
+    ds = diff --staged
     s = status
     a = add
     aa = add --all
     c = commit
+    co = checkout
     cam = commit --all --message
+    sm = submodule
+    rb = rebase
     ctags = !.git/hooks/ctags
     authors = !git log --format='%aN <%C(blue)%aE%Creset>' | sort -u
 
@@ -30,4 +34,3 @@
 
 [gpg]
     program = gpg2
-

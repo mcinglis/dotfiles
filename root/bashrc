@@ -2,14 +2,35 @@
 # Bash configuration; aliases, functions, and options.
 # Executed by root non-login shells.
 
+if [ -r /etc/bashrc ]; then
+    source /etc/bashrc
+fi
+
+# Wayland as of F25 doesn't source the profile script, so:
+# (https://bugzilla.gnome.org/show_bug.cgi?id=736660)
+if [ -r ~/.profile ]; then
+    source ~/.profile
+fi
+
 # Set LS_COLORS to show appropriate colors for different file types.
 eval "$(dircolors --sh)"
 
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
-alias ls='ls --color=auto --human-readable --group-directories-first --quoting-style=literal'
+alias ls='LC_COLLATE=C ls --color=auto --human-readable --group-directories-first --quoting-style=literal'
+alias ll='ls -la'
 alias grep='grep --color=auto'
+alias e='$EDITOR'
+
+# Write throwaway bash code, and evaluate it.
+function ebash() {
+    local SCRIPT=~/.local/share/ebash.bash
+    $EDITOR "$SCRIPT"
+    cat "$SCRIPT"
+    echo '----------'
+    source "$SCRIPT"
+}
 
 # Correct minor errors when spelling directories for `cd`.
 shopt -s cdspell
@@ -34,11 +55,4 @@ shopt -s histappend
 
 # Use case-insensitive pathname expansion.
 shopt -s nocaseglob
-
-if [ -r /etc/bashrc ]; then
-    source /etc/bashrc
-fi
-
-# Fedora's /etc/bashrc overwrites PS1, so:
-export PS1='\[\e[1;34m\]\w\[\e[m\]\$ '
 

@@ -6,21 +6,26 @@ if [ -r /etc/bashrc ]; then
     source /etc/bashrc
 fi
 
-# Fedora's /etc/bashrc overwrites PS1, so:
-export PS1='\[\e[1;34m\]\w\[\e[m\]\$ '
+# Wayland as of F25 doesn't source the profile script, so:
+# (https://bugzilla.gnome.org/show_bug.cgi?id=736660)
+if [ -r ~/.profile ]; then
+    source ~/.profile
+fi
 
 # Set LS_COLORS to show appropriate colors for different file types.
 eval "$(dircolors --sh)"
 
-alias ls='ls --color=auto --human-readable --group-directories-first --quoting-style=literal'
+alias ls='LC_COLLATE=C ls --color=auto --human-readable --group-directories-first --quoting-style=literal'
+alias ll='ls -la'
 alias grep='grep --color=auto'
 alias g='git'
 alias gs='git status'
+alias e='$EDITOR'
 alias o='xdg-open'
 
 # Write throwaway bash code, and evaluate it.
 function ebash() {
-    local SCRIPT=~/'.local/share/ebash.bash'
+    local SCRIPT=~/.local/share/ebash.bash
     $EDITOR "$SCRIPT"
     cat "$SCRIPT"
     echo '----------'
@@ -32,6 +37,12 @@ function sshpoll() {
     while ! ssh -o ConnectTimeout=3 $*; do
         sleep 1
     done
+}
+
+# Shortcut to downloading best audio from a youtube-dl URL:
+function audio-dl() {
+    local url="$1"; shift
+    youtube-dl --extract-audio --format bestaudio "$@" "$url"
 }
 
 # Easily create Python virtualenvs in a central location.
